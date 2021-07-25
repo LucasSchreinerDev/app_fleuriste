@@ -26,12 +26,13 @@ $commandes = $select->fetchAll();
     </div>
     <nav>
         <a href="client.php">Client</a>
-        <a href="#">Commande</a>
-        <a href="#">Fleurs</a>
+        <a href="index.php">Commande</a>
+        <a href="fleurs.php">Fleurs</a>
     </nav>
 </header>
 <main>
     <h2>Les livraisons à venir</h2>
+    <a href="commande_past.php">Commande passée</a>
     <div class="table">
         <table>
             <tr>

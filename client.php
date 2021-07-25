@@ -21,9 +21,9 @@ $clients= $insert->fetchAll();
         <h1>La boite à fleurs</h1>
     </div>
     <nav>
-        <a href="#">Client</a>
-        <a href="#">Commande</a>
-        <a href="#">Fleurs</a>
+        <a href="client.php">Client</a>
+        <a href="index.php">Commande</a>
+        <a href="fleurs.php">Fleurs</a>
     </nav>
 </header>
 <main>
