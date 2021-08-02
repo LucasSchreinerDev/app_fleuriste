@@ -1,8 +1,12 @@
 <?php
 require_once 'database.php';
+date_default_timezone_set('Europe/Paris');
+$date = date('Y-m-d H:i:s');
 
-$select = $bdd->prepare("SELECT `date_livraison`, `lieu_livraison`, `nom`, `prenom`, `libelle` FROM commande INNER JOIN `commande_fleur` ON commande.num_commande = commande_fleur.id_fleur INNER JOIN client ON commande.num_commande = client.id INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur INNER JOIN variete ON fleur.id_variete = variete.id");
-$select->execute();
+$select = $bdd->prepare("SELECT date_livraison, lieu_livraison, nom, prenom, libelle FROM commande INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_fleur INNER JOIN client ON commande.num_commande = client.id INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur INNER JOIN variete ON fleur.id_variete = variete.id WHERE date_livraison >= :date");
+$select->execute(array(
+    'date'=> $date,
+));
 $commandes = $select->fetchAll();
 
 

@@ -10,7 +10,7 @@ $port=getenv('DB_PORT');
 $dbname=getenv('DBNAME');
 
 try {
-    $bdd = new PDO("mysql:host=localhost;port=$port;dbname=fleuriste;charset=utf8","root","");
+    $bdd = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8",eleve,"bonjour");
 }
 
 catch (PDOException $e){

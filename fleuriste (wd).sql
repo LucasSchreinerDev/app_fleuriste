@@ -6,7 +6,6 @@
 -- Généré le :  Dim 25 juil. 2021 à 23:19
 -- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.3.12
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -44,7 +43,6 @@ CREATE TABLE IF NOT EXISTS `client` (
 --
 -- Déchargement des données de la table `client`
 --
-
 INSERT INTO `client` (`id`, `nom`, `prenom`, `telephone`, `email`, `adresse`, `ville`) VALUES
 (9, 'Jakobssen', 'Cinnamon', '5473973542', 'cjakobssen0@wikimedia.org', '0160 Harbort Way', 'Piteå'),
 (10, 'MacGoun', 'Genevra', '7018238829', 'gmacgoun1@hexun.com', '296 Pond Place', 'Dehī'),
