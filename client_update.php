@@ -1,6 +1,14 @@
 <?php
+require 'database.php';
+ if (isset($_GET['update']) && !empty(($_GET['update'])) ) {
+     $id = $_GET['update'];
+     $select = $bdd->prepare('SELECT nom, prenom, telephone,email,adresse,ville FROM client WHERE :id');
+     $select->execute(array(
+             'id' => $id,
+     ));
+     $data= $select->fetch();
+}
 ?>
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -18,20 +26,23 @@
     </div>
     <nav>
         <a href="client.php">Client</a>
-        <a href="#">Commande</a>
-        <a href="#">Fleurs</a>
-    </nav>
+        <a href="client_commande.php">Commande</a>
+        <a href="fleurs.php">Fleurs</a>
+    </nav>                                                                                                                                                                                                       é,
 </header>
 <main>
-<form>
-    <input type="text" name="nom" value="">
-    <input type="text" name="prenom" value="">
-    <input type="text" name="adresse" value="">
-    <input type="number" name="cp" value="">
-    <input type="number" name="ville" value="">
-    <input type="text" name="telephone" value="">
-    <input type="text" name="email" value="">
-    <a href="client.php">return</a>
+    <h1>Modifier un client</h1>
+    <div class="client_add">
+        <form action="client_update_traitement.php" method="post">
+            <input type="text" name="firstname" value="<?php echo $data[1] ?>">
+            <input type="text" name="lastname" value="<?php echo $data[0] ?>">
+            <input type="text" name="phone" value="<?php echo $data[2] ?>">
+            <input type="email" name="email" value="<?php echo $data[3] ?>">
+            <input type="text" name="address" value="<?php echo $data[4]?>">
+            <input type="text" name="city" value="<?php echo $data[5] ?>">
+            <input type="submit">
+        </form>
+    </div>
 </form>
 </main>
 </body>

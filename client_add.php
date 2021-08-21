@@ -9,6 +9,17 @@
     <title>Document</title>
 </head>
 <body>
+<header>
+    <div class="logo">
+        <h1>La boite à fleurs</h1>
+    </div>
+    <nav>
+        <a href="client.php">Client</a>
+        <a href="#">Commande</a>
+        <a href="#">Fleurs</a>
+    </nav>
+</header>
+<main>
 <h1>Ajouter un client</h1>
 <div class="client_add">
     <form action="client_add_traitement.php" method="post">
@@ -21,5 +32,6 @@
         <input type="submit">
     </form>
 </div>
+</main>
 </body>
 </html>
