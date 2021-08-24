@@ -7,17 +7,27 @@ if (!isset($_SESSION['user'])) {
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
 
+$sessionid= intval($_SESSION['user']);
+
+$aaa = $bdd->prepare("SELECT * from users where id = :session");
+$aaa->execute(array(
+       'session'=> $sessionid,
+));
+$user = $aaa->fetch();
+
 $select = $bdd->prepare("SELECT date_livraison, lieu_livraison, nom, prenom, libelle
     FROM commande
     INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande
     INNER JOIN client ON commande.id_client = client.id
     INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur
     INNER JOIN variete ON fleur.id_variete = variete.id 
-    WHERE date_livraison <= :date");
+    WHERE date_livraison >= :date");
 $select->execute(array(
     'date'=> $date,
 ));
 $commandes = $select->fetchAll();
+
+
 
 ?>
 <!doctype html>
@@ -43,24 +53,26 @@ $commandes = $select->fetchAll();
     </nav>
 </header>
 <main>
-    <h2>Commande passée</h2>
-    <a href="commande.php">Commande à venir</a>
+    <b>Bienvenu ! <?= $user[1]?> </b>
+    <a href="logout.php">logout</a>
+    <h2>Les livraisons à venir</h2>
+    <a href="commande_past.php">Commande passée</a>
     <div class="table">
         <table>
             <tr>
-                <th>Date de livraison</th>
-                <th>Adresse de livraison</th>
-                <th>Nom & prenom client</th>
-                <th>bouquet</th>
+              <th>Date de livraison</th>
+              <th>Adresse de livraison</th>
+              <th>Nom & prenom client</th>
+              <th>bouquet</th>
             </tr>
             <?php foreach ($commandes as $commande) { ?>
-                <tr>
-                    <td><?= $commande['date_livraison'] ?></td>
-                    <td><?= $commande['lieu_livraison'] ?></td>
-                    <td><?= $commande['nom']." ".$commande['prenom']?></td>
-                    <td><?= $commande['libelle']?></td>
+            <tr>
+                <td><?= $commande['date_livraison'] ?></td>
+                <td><?= $commande['lieu_livraison'] ?></td>
+                <td><?= $commande['nom']." ".$commande['prenom']?></td>
+                <td><?= $commande['libelle']?></td>
 
-                </tr>
+            </tr>
             <?php } ?>
         </table>
     </div>

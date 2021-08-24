@@ -1,5 +1,9 @@
 <?php
-require 'database.php';
+session_start();
+require_once 'database.php';
+if (!isset($_SESSION['user'])) {
+    header('Location:index.php');
+}
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
 
@@ -11,8 +15,8 @@ if (!empty($_GET['client']) && isset($_GET['client'])){
     ));
     $data= $select->fetch();
 
-    $select = $bdd->prepare("
-   SELECT num_commande,date_livraison ,date_commande, lieu_livraison, nom, prenom,telephone, email , adresse , client.ville 
+    $select = $bdd->prepare(
+   "SELECT num_commande,date_livraison ,date_commande, lieu_livraison, nom, prenom,telephone, email , adresse , client.ville 
     FROM commande 
     INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
     INNER JOIN client ON commande.id_client = client.id 
@@ -44,7 +48,7 @@ if (!empty($_GET['client']) && isset($_GET['client'])){
     </div>
     <nav>
         <a href="client.php">Client</a>
-        <a href="index.php">Commande</a>
+        <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
     </nav>
 </header>

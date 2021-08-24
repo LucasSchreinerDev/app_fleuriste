@@ -1,5 +1,9 @@
 <?php
-require 'database.php';
+session_start();
+require_once 'database.php';
+if (!isset($_SESSION['user'])) {
+    header('Location:index.php');
+}
 if (isset($_GET['del'])) {
     $id=htmlspecialchars($_GET['del']);
     $ids=intval($id);

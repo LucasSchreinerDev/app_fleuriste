@@ -1,5 +1,9 @@
 <?php
+session_start();
 require_once 'database.php';
+if (!isset($_SESSION['user'])) {
+    header('Location:index.php');
+}
 $insert = $bdd->prepare("SELECT * FROM `client`");
 $insert->execute(array());
 $clients= $insert->fetchAll();
@@ -22,7 +26,7 @@ $clients= $insert->fetchAll();
     </div>
     <nav>
         <a href="client.php">Client</a>
-        <a href="index.php">Commande</a>
+        <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
     </nav>
 </header>
@@ -34,7 +38,7 @@ $clients= $insert->fetchAll();
        <input type="submit">
       </form>
       <a href="client_add.php">ajouter client</a>
-      <a href="index.php">return</a>
+      <a href="commande.php">return</a>
     </div>
     <div class="table">
         <table>

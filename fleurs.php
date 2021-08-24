@@ -1,5 +1,9 @@
 <?php
+session_start();
 require_once 'database.php';
+if (!isset($_SESSION['user'])) {
+    header('Location:index.php');
+}
 $select = $bdd->prepare("SELECT `libelle`, `stock`, `raison_soc` FROM variete INNER JOIN `fleur` ON variete.id = fleur.id_variete INNER JOIN fleur_fournisseur ON fleur.id_fleur = fleur_fournisseur.id_fleur INNER JOIN fournisseur ON fleur_fournisseur.id_fournisseur = fournisseur.id
 ");
 $select->execute();
@@ -22,7 +26,7 @@ $fleurs= $select->fetchAll();
     </div>
     <nav>
         <a href="client.php">Client</a>
-        <a href="index.php">Commande</a>
+        <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
     </nav>
 </header>

@@ -1,5 +1,9 @@
 <?php
-require 'database.php';
+session_start();
+require_once 'database.php';
+if (!isset($_SESSION['user'])) {
+    header('Location:index.php');
+}
  if (isset($_GET['update']) && !empty(($_GET['update'])) ) {
      $id = $_GET['update'];
      $select = $bdd->prepare('SELECT nom, prenom, telephone,email,adresse,ville FROM client WHERE :id');

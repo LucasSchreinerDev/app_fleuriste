@@ -32,7 +32,7 @@ if (!empty($_POST['firstname']) && isset($_POST['firstname']) && !empty($_POST['
                     'adresse'=> $address,
                     'ville' => $city
                 ));
-                header('Location:index.php?add_err=success');
+                header('Location:commande.php?add_err=success');
             }else header('Location:client.php?add_err=mail');
           }else header('Location:client.php?add_err=phone');
          }else header('Location:client.php?add_err=lname');
