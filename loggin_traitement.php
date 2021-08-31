@@ -16,8 +16,10 @@ if (isset($_POST['email']) && isset($_POST['password'])){
         {
             if(password_verify($password, $data['password']))
             {
-                $_SESSION['user'] = $data['id'];
-                header('Location:commande.php');
+                if ($data['grade'] > 0) {
+                    $_SESSION['user'] = $data['id'];
+                    header('Location:commande.php');
+                }else header('Location:index.php?loggin_err=grade');
             }else header('Location:index.php?loggin_err=password');
         }else header('Location:index.php?loggin_err=notvalid');
     }else header('Location:index.php?loggin_err=email');

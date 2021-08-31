@@ -15,6 +15,10 @@ $aaa->execute(array(
 ));
 $user = $aaa->fetch();
 
+if ($user["grade"] >= 3){
+    $admin = "admin";
+}
+
 $select = $bdd->prepare("SELECT date_livraison, lieu_livraison, nom, prenom, libelle
     FROM commande
     INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande
@@ -47,16 +51,26 @@ $commandes = $select->fetchAll();
         <h1>La boite à fleurs</h1>
     </div>
     <nav>
+        <?php if (isset($admin))
+        { ?>
+        <a href="liste_employer.php">Employée</a>
+            <?php } ?>
         <a href="client.php">Client</a>
         <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
     </nav>
 </header>
 <main>
-    <b>Bienvenu ! <?= $user[1]?> </b>
+    <b>Bienvenu ! <?= $user[1]?><br></b>
+    <b>Vous êtes <?php
+        if (isset($admin)) {
+            echo $admin;
+        }else echo "Employée";
+        ?></b>
     <a href="logout.php">logout</a>
     <h2>Les livraisons à venir</h2>
-    <a href="commande_past.php">Commande passée</a>
+    <a href="commande_past.php">Commande passée</a><br>
+    <a href="commande_add.php">Ajoutée une commande</a>
     <div class="table">
         <table>
             <tr>
