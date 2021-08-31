@@ -17,6 +17,7 @@
 <input type="password" name="password">
     <input type="submit">
 </form>
+<a href="register.php">S'enregistrer</a>
 <footer>
 </footer>
 </body>

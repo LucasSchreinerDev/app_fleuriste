@@ -8,7 +8,6 @@ $insert = $bdd->prepare("SELECT * FROM `client`");
 $insert->execute(array());
 $clients= $insert->fetchAll();
 ?>
-
 <!doctype html>
 <html lang="fr">
 <head>
