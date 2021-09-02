@@ -36,6 +36,7 @@ if (!isset($_SESSION['user'])) {
         <input type="email" name="email" placeholder="Email">
         <input type="text" name="address" placeholder="Address">
         <input type="text" name="city" placeholder="City">
+        <input type="text" name="code_postal" placeholder="Cp">
         <input type="submit">
     </form>
 </div>

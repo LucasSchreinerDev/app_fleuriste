@@ -11,6 +11,7 @@ if (!empty($_POST['firstname']) && isset($_POST['firstname']) && !empty($_POST['
     $email = htmlentities($_POST['email']);
     $address = htmlentities($_POST['address']);
     $city = htmlentities($_POST['city']);
+    $cp=htmlentities($_POST['code_postal']);
 
     $check = $bdd->prepare('SELECT * FROM client WHERE email = ?');
     $check->execute(array($email));
@@ -22,15 +23,16 @@ if (!empty($_POST['firstname']) && isset($_POST['firstname']) && !empty($_POST['
         if (strlen($firstname)<= 50){
         if (strlen($lastname)<= 50){
         if (strlen($phone)<= 14) {
-            if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $insert = $bdd->prepare('INSERT INTO client(nom, prenom, telephone,email,adresse,ville) VALUES(:nom, :prenom, :telephone,:email,:adresse,:ville)');
+            
+                $insert = $bdd->prepare('INSERT INTO client(nom, prenom, telephone,email,adresse,ville,code_postal) VALUES(:nom, :prenom, :telephone,:email,:adresse,:ville, :cp)');
                 $insert->execute(array(
                     'prenom' => $firstname,
                     'nom' => $lastname,
                     'email' => $email,
                     'telephone' => $phone,
                     'adresse'=> $address,
-                    'ville' => $city
+                    'ville' => $city,
+                    'cp'=> $cp
                 ));
                 header('Location:commande.php?add_err=success');
             }else header('Location:client.php?add_err=mail');
@@ -39,3 +41,4 @@ if (!empty($_POST['firstname']) && isset($_POST['firstname']) && !empty($_POST['
         }else header('Location:client.php?add_err=fname');
       }else header('Location:client.php?add_err=findclient');
     }else header('Location:client.php?add_err=form');
+
