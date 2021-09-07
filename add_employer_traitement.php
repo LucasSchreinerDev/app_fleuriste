@@ -25,13 +25,11 @@ if(!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom']) 
                 if(strlen($email) <= 100){
                     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                          if ($grade <= 3){
-                           if ($password > strlen("3")){
-                            if ($password < strlen("12")){
+                           if (strlen($password) > 6 && strlen($password) < 32){
                              if($password === $confirm_password){
                                  $cost = ['cost' => 12];
                              }
                                 $password = password_hash($password, PASSWORD_BCRYPT, $cost);
-                                try {
                                 $insert = $bdd->prepare('INSERT INTO users(firstname, surname, telephone, email, grade, password) VALUES(:prenom, :nom , :mobile,  :email, :grade,:password)');
                                 $insert->execute(array(
                                     'nom' => $nom,
@@ -40,14 +38,10 @@ if(!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom']) 
                                     'grade' => $grade,
                                     'email' => $email,
                                     'password' => $password,
-                                ));}
-                                catch (PDOException $e){
-                                    echo $e;
-                                }
+                                ));
                                 header('Location:liste_employer.php?loggin_err=success');/* bug ne passe pas loggin_err*/
                             }else{ header('Location:add_employer.php?reg_err=password');}
                         }else{ header('Location:add_employer.php?reg_err=password_lenght');}
-                      }else{header("Location:add_employer.php");}
                     }else{ header('Location:add_employer.php?reg_err=valid');}
                 }else{ header('Location:add_employer.php?reg_err=email_length');}
             }else{ header('Location:add_employer.php?reg_err=nom_length');}

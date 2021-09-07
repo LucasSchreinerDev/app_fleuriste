@@ -6,9 +6,10 @@ if (!isset($_SESSION['user'])) {
 }
  if (isset($_GET['update']) && !empty(($_GET['update'])) ) {
      $id = $_GET['update'];
-     $select = $bdd->prepare('SELECT nom, prenom, telephone,email,adresse,ville FROM client WHERE :id');
+     $ids = intval($_GET['update']);
+     $select = $bdd->prepare('SELECT nom, prenom, telephone, email, adresse, code_postal, ville FROM client WHERE :ids');
      $select->execute(array(
-             'id' => $id,
+             'ids' => $ids,
      ));
      $data= $select->fetch();
 }
@@ -30,20 +31,23 @@ if (!isset($_SESSION['user'])) {
     </div>
     <nav>
         <a href="client.php">Client</a>
-        <a href="client_commande.php">Commande</a>
+        <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
     </nav>                                                                                                                                                                                                       é,
 </header>
 <main>
     <h1>Modifier un client</h1>
+    <a href="client.php">Retour</a>
     <div class="client_add">
         <form action="client_update_traitement.php" method="post">
-            <input type="text" name="firstname" value="<?php echo $data[1] ?>">
-            <input type="text" name="lastname" value="<?php echo $data[0] ?>">
-            <input type="text" name="phone" value="<?php echo $data[2] ?>">
-            <input type="email" name="email" value="<?php echo $data[3] ?>">
-            <input type="text" name="address" value="<?php echo $data[4]?>">
-            <input type="text" name="city" value="<?php echo $data[5] ?>">
+            <input type="hidden" value="<?php $err = $_GET["update"] ?>">
+            <input type="text" name="firstname" value="<?php echo $data["prenom"] ?>">
+            <input type="text" name="lastname" value="<?php echo $data["nom"] ?>">
+            <input type="text" name="phone" value="<?php echo $data["telephone"] ?>">
+            <input type="email" name="email" value="<?php echo $data["email"] ?>">
+            <input type="text" name="address" value="<?php echo $data["adresse"]?>">
+            <input type="number" name="code_postal" value="<?php echo $data["code_postal"]?>">
+            <input type="text" name="city" value="<?php echo $data["ville"] ?>">
             <input type="submit">
         </form>
     </div>

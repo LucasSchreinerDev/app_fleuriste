@@ -22,7 +22,7 @@ if(!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom']) 
             if (strlen($prenom) <= 100){
                 if(strlen($email) <= 100){
                   if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                    if ($password > strlen("8")){
+                    if ($password > strlen("4")){
                       if($password === $confirm_password){
                         $cost = ['cost' => 12];
                         $password = password_hash($password, PASSWORD_BCRYPT, $cost);

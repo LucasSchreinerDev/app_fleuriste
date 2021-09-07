@@ -2,6 +2,10 @@
 session_start();
 require_once 'database.php';
 
+if (!isset($_SESSION['user'])) {
+    header('Location:index.php');
+}
+
 $sessionid= intval($_SESSION['user']);
 
 $rank = $bdd->prepare("SELECT * from users where id = :session");
@@ -12,9 +16,8 @@ $user = $rank->fetch();
 
 if ($user["grade"] >= 3){
     $admin = "admin";
-}
 
-$query = $bdd->prepare('SELECT firstname, surname, telephone, email, grade, active FROM users');
+$query = $bdd->prepare('SELECT id, firstname, surname, telephone, email, grade, active FROM users');
 $query->execute();
 $employers = $query->fetchAll();
 
@@ -59,18 +62,28 @@ $employers = $query->fetchAll();
 
     <?php foreach ($employers as $employer){?>
         <?php
-        if ($employer[4] == "3") {
-            $employer[4] = "admin";}
-        if ($employer[4] == "1") {
-            $employer[4] = "employer";}
-        if ($employer[4] == "0") {
-            $employer[4] = "inviter";}
+        if ($employer[5] == "3") {
+            $employer[5] = "admin";}
+        if ($employer[5] == "1") {
+            $employer[5] = "employer";}
+        if ($employer[5] == "0") {
+            $employer[5] = "inviter";}
+        if ($employer[6] = "1"){
+            $active = "Actif";
+        }else $active = "Innactif"
         ?>
-       <h5><?= $employer[0]?></h5>
+            <div class="container_employer">
+            <?php
+            $employer_id = $employer[0];
+            ?>
        <h5><?= $employer[1]?></h5>
        <h5><?= $employer[2]?></h5>
        <h5><?= $employer[3]?></h5>
        <h5><?= $employer[4]?></h5>
        <h5><?= $employer[5]?></h5>
-    <?php }?>
+       <h5><?= $active?></h5>
+       <a href="employer_del.php?del_err=<?=$employer_id?>".php">Supprimer</a>
+       <a href="employer_update.php?update=<?=$employer_id?>.php">Modifer</a>
+            </div>
+    <?php }}else header('Location:index.php?grade_err'); // commenter ici ?>
 </main>

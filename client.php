@@ -1,8 +1,21 @@
 <?php
 session_start();
 require_once 'database.php';
+
 if (!isset($_SESSION['user'])) {
     header('Location:index.php');
+}
+
+$sessionid= intval($_SESSION['user']);
+
+$rank = $bdd->prepare("SELECT * from users where id = :session");
+$rank->execute(array(
+    'session'=> $sessionid,
+));
+$user = $rank->fetch();
+
+if ($user["grade"] >= 3) {
+    $admin = "admin";
 }
 $insert = $bdd->prepare("SELECT * FROM `client`");
 $insert->execute(array());
@@ -24,12 +37,23 @@ $clients= $insert->fetchAll();
         <h1>La boite à fleurs</h1>
     </div>
     <nav>
+        <?php if (isset($admin))
+        { ?>
+            <a href="liste_employer.php">Employée</a>
+        <?php } ?>
         <a href="client.php">Client</a>
         <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
     </nav>
 </header>
 <main>
+    <b>Bienvenu ! <?= $user[1]?><br></b>
+    <b>Vous êtes <?php
+        if (isset($admin)) {
+            echo $admin;
+        }else echo "Employée";
+        ?></b>
+    <a href="logout.php">logout</a><br>
     <div class="feature">
       <h2>Les Clients</h2>
       <form action="" method="get">
@@ -53,7 +77,7 @@ $clients= $insert->fetchAll();
 
                 <td><?= $client['nom']?></td>
                 <td><?= $client['prenom']?></td>
-                <td><?= $client['adresse'].", "." ".$client['ville']?></td>
+                <td><?= $client['adresse'].", "." ".$client['ville']." ".$client['code_postal']?></td>
                 <td><?= $client['telephone']?></td>
                 <td><?= $client['email']?></td>
                 <td><a href="client_commande.php?client=<?=$client['id'] ?>">commande</a></td>

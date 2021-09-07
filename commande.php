@@ -9,11 +9,11 @@ $date = date('Y-m-d H:i:s');
 
 $sessionid= intval($_SESSION['user']);
 
-$aaa = $bdd->prepare("SELECT * from users where id = :session");
-$aaa->execute(array(
+$query = $bdd->prepare("SELECT * from users where id = :session");
+$query->execute(array(
        'session'=> $sessionid,
 ));
-$user = $aaa->fetch();
+$user = $query->fetch();
 
 if ($user["grade"] >= 3){
     $admin = "admin";

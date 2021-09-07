@@ -1,0 +1,5 @@
+.container_employer{
+ display: flex;
+ align-items: center;
+    justify-content: space-between;
+}
