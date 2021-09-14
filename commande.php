@@ -58,6 +58,7 @@ $commandes = $select->fetchAll();
         <a href="client.php">Client</a>
         <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
+        <a href="fournisseur.php">Fournisseur</a>
     </nav>
 </header>
 <main>
@@ -91,5 +92,6 @@ $commandes = $select->fetchAll();
         </table>
     </div>
 </main>
-</body>
-</html>
+<?php
+require_once "footer.php";
+?>

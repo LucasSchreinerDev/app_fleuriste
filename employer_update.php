@@ -17,14 +17,10 @@ $user = $rank->fetch();
 if ($user["grade"] >= 3){
 $admin = "admin";
 
-if (isset($_GET["err"])){
-     $ids = $_GET["err"];
-}
-
 if (isset($_GET['update']) && !empty(($_GET['update']))) {
     $id = htmlspecialchars($_GET['update']);
     $ids = intval($id);
-    $select = $bdd->prepare('SELECT * FROM users WHERE :ids');
+    $select = $bdd->prepare('SELECT * FROM users WHERE id = :ids');
     $select->execute(array(
         'ids' => $ids,
     ));
@@ -54,9 +50,17 @@ if (isset($_GET['update']) && !empty(($_GET['update']))) {
         <a href="client.php">Client</a>
         <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
+        <a href="fournisseur.php">Fournisseur</a>
     </nav>
 </header>
 <main>
+    <b>Bienvenu ! <?= $user[1]?><br></b>
+    <b>Vous êtes <?php
+        if (isset($admin)) {
+            echo $admin;
+        }else echo "Employée";
+        ?></b>
+    <a href="logout.php">logout</a><br>
     <h1>Modifier un employer</h1>
     <a href="liste_employer.php">Retour</a>
     <div class="update">
@@ -71,6 +75,12 @@ if (isset($_GET['update']) && !empty(($_GET['update']))) {
         <label for="tel">Mobile</label>
         <input type="tel" name="tel" value="<?= $data['telephone'] ?>">
         <label for="grade">Grade</label>
+        <select name="grade">
+            <option>admin</option>
+            <option>employer</option>
+        </select>
+
+
 <!--       --><?php
          $grade = intval($data["grade"]);
         //if ($data['grade'] == "3") {
@@ -79,8 +89,7 @@ if (isset($_GET['update']) && !empty(($_GET['update']))) {
 //        $data['grade'] = "employer";}
 //        if ($data['grade'][5] == "0") {
 //        $data['grade'] = "inviter";} ?>
-        <input type="number" name="grade" value="<?= $grade ?>">
-
+<!--        <input type="number" name="grade" value="--><?//= $grade ?><!--">-->
         <input type="submit">
     </form>
     </div>

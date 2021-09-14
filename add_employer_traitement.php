@@ -11,7 +11,12 @@ if(!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom']) 
     $password = htmlentities($_POST['password']);
     $confirm_password = htmlentities($_POST['confirm_password']);
 
-    $grade = intval($grade);
+
+    if ($grade === "admin"){
+        $grade = 3 ;
+    }else{
+        $grade = 1 ;
+    }
 
     $check = $bdd->prepare('SELECT username, email, password FROM user WHERE email = ?');
     $check->execute(array($email));

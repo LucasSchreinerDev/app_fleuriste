@@ -1,57 +1,31 @@
 <?php
-session_start();
+require_once "header.php";
 require_once 'database.php';
-if (!isset($_SESSION['user'])) {
-    header('Location:index.php');
-}
  if (isset($_GET['update']) && !empty(($_GET['update'])) ) {
      $id = $_GET['update'];
      $ids = intval($_GET['update']);
-     $select = $bdd->prepare('SELECT nom, prenom, telephone, email, adresse, code_postal, ville FROM client WHERE :ids');
+     $select = $bdd->prepare('SELECT nom, prenom, telephone, email, adresse, code_postal, ville FROM client WHERE id = :ids');
      $select->execute(array(
              'ids' => $ids,
      ));
      $data= $select->fetch();
 }
 ?>
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
-    <title>Document</title>
-</head>
-<body>
-<header>
-    <div class="logo">
-        <h1>La boite à fleurs</h1>
-    </div>
-    <nav>
-        <a href="client.php">Client</a>
-        <a href="commande.php">Commande</a>
-        <a href="fleurs.php">Fleurs</a>
-    </nav>                                                                                                                                                                                                       é,
-</header>
-<main>
     <h1>Modifier un client</h1>
     <a href="client.php">Retour</a>
     <div class="client_add">
         <form action="client_update_traitement.php" method="post">
-            <input type="hidden" value="<?php $err = $_GET["update"] ?>">
-            <input type="text" name="firstname" value="<?php echo $data["prenom"] ?>">
-            <input type="text" name="lastname" value="<?php echo $data["nom"] ?>">
-            <input type="text" name="phone" value="<?php echo $data["telephone"] ?>">
+            <input type="hidden" name="id" value="<?php echo $_GET["update"] ?>">
+            <input type="text" name="prenom" value="<?php echo $data["prenom"] ?>">
+            <input type="text" name="nom" value="<?php echo $data["nom"] ?>">
+            <input type="text" name="telephone" value="<?php echo $data["telephone"] ?>">
             <input type="email" name="email" value="<?php echo $data["email"] ?>">
-            <input type="text" name="address" value="<?php echo $data["adresse"]?>">
-            <input type="number" name="code_postal" value="<?php echo $data["code_postal"]?>">
-            <input type="text" name="city" value="<?php echo $data["ville"] ?>">
+            <input type="text" name="adresse" value="<?php echo $data["adresse"]?>">
+            <input type="text" name="code_postal" value="<?php echo $data["code_postal"]?>">
+            <input type="text" name="ville" value="<?php echo $data["ville"] ?>">
             <input type="submit">
         </form>
     </div>
-</form>
-</main>
-</body>
-</html>
+<?php
+require_once "footer.php";
+?>

@@ -9,7 +9,13 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"])&
     $nom = htmlentities($_POST["nom"]);
     $prenom = htmlentities($_POST["prenom"]);
     $mobile = htmlentities($_POST["tel"]);
-    $grade = intval(htmlentities($_POST["grade"]));
+    $grade = htmlentities($_POST["grade"]);
+
+    if ($grade === "admin"){
+        $grade = 3 ;
+    }else{
+        $grade = 1 ;
+    }
 
     $query = $bdd->prepare("UPDATE `users` SET email = :email, firstname = :firstname, surname = :surname, telephone = :telephone, grade = :grade WHERE users.id = :id");
     $query->execute(array(

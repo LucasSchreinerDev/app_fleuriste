@@ -1,8 +1,21 @@
 <?php
 session_start();
 require_once 'database.php';
+
 if (!isset($_SESSION['user'])) {
     header('Location:index.php');
+}
+
+$sessionid= intval($_SESSION['user']);
+
+$rank = $bdd->prepare("SELECT * from users where id = :session");
+$rank->execute(array(
+    'session'=> $sessionid,
+));
+$user = $rank->fetch();
+
+if ($user["grade"] >= 3) {
+    $admin = "admin";
 }
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
@@ -37,12 +50,24 @@ $commandes = $select->fetchAll();
         <h1>La boite à fleurs</h1>
     </div>
     <nav>
+        <?php if (isset($admin))
+        { ?>
+            <a href="liste_employer.php">Employée</a>
+        <?php } ?>
         <a href="client.php">Client</a>
         <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
+        <a href="fournisseur.php">Fournisseur</a>
     </nav>
 </header>
 <main>
+    <b>Bienvenu ! <?= $user[1]?><br></b>
+    <b>Vous êtes <?php
+        if (isset($admin)) {
+            echo $admin;
+        }else echo "Employée";
+        ?></b>
+    <a href="logout.php">Déconnexion</a>
     <h2>Commande passée</h2>
     <a href="commande.php">Commande à venir</a>
     <div class="table">
@@ -65,5 +90,6 @@ $commandes = $select->fetchAll();
         </table>
     </div>
 </main>
-</body>
-</html>
+<?php
+require_once "footer.php";
+?>

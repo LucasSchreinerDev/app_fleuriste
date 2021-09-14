@@ -18,8 +18,10 @@ if (isset($_SESSION['user'])) {
         if (isset($_GET['del_err'])) {
             $id = htmlspecialchars($_GET['del_err']);
             $ids = intval($id);
-            $delete = $bdd->prepare("DELETE FROM users WHERE id=$ids");
-            $delete->execute(array());
+            $delete = $bdd->prepare("UPDATE users SET active = :grade WHERE id=$ids");
+            $delete->execute(array(
+                "grade" => 0,
+            ));
             header('Location:liste_employer.php');
         } else echo "noob";
     } else header('Location:liste_employer.php');

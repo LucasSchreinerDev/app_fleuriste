@@ -50,6 +50,8 @@ if (!empty($_GET['client']) && isset($_GET['client'])){
         <a href="client.php">Client</a>
         <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
+        <a href="fournisseur.php">Fournisseur</a>
+
     </nav>
 </header>
 <main>
@@ -81,3 +83,6 @@ if (!empty($_GET['client']) && isset($_GET['client'])){
     COMMANDE PASSÉE
 </body>
 </html>
+<?php
+require_once "footer.php";
+?>

@@ -47,6 +47,7 @@ $employers = $query->fetchAll();
         <a href="client.php">Client</a>
         <a href="commande.php">Commande</a>
         <a href="fleurs.php">Fleurs</a>
+        <a href="fournisseur.php">Fournisseur</a>
     </nav>
 </header>
 <main>
@@ -57,6 +58,7 @@ $employers = $query->fetchAll();
         }else echo "Employée";
         ?></b>
     <a href="logout.php">logout</a><br>
+
     <a href="add_employer.php">Ajouter un employer</a>
     <h1>Liste des employers:</h1>
 
@@ -68,9 +70,10 @@ $employers = $query->fetchAll();
             $employer[5] = "employer";}
         if ($employer[5] == "0") {
             $employer[5] = "inviter";}
-        if ($employer[6] = "1"){
-            $active = "Actif";
-        }else $active = "Innactif"
+
+        if ($employer[6] == 1){
+            $active = "Active";
+        }else {$active = "Innactif";}
         ?>
             <div class="container_employer">
             <?php
@@ -82,7 +85,7 @@ $employers = $query->fetchAll();
        <h5><?= $employer[4]?></h5>
        <h5><?= $employer[5]?></h5>
        <h5><?= $active?></h5>
-       <a href="employer_del.php?del_err=<?=$employer_id?>".php">Supprimer</a>
+       <a href="employer_active.php?del_err=<?=$employer_id?>".php">Innactif</a>
        <a href="employer_update.php?update=<?=$employer_id?>.php">Modifer</a>
             </div>
     <?php }}else header('Location:index.php?grade_err'); // commenter ici ?>
