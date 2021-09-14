@@ -71,10 +71,22 @@ $employers = $query->fetchAll();
         if ($employer[5] == "0") {
             $employer[5] = "inviter";}
 
-        if ($employer[6] == 1){
-            $active = "Active";
-        }else {$active = "Innactif";}
-        ?>
+     if ($employer[6] === "1"){
+        $statue = "actif";
+    }
+    if ($employer[6] === "0"){
+        $statue = "innactif";
+    }
+    if ($employer[6] === "2"){
+        $statue = "congé";
+    }
+    if ($employer[6] === "3"){
+        $statue = "vacance";
+    }
+    if ($employer[6] === "4"){
+        $statue = "arret maladie";
+    }
+    ?>
             <div class="container_employer">
             <?php
             $employer_id = $employer[0];
@@ -84,8 +96,8 @@ $employers = $query->fetchAll();
        <h5><?= $employer[3]?></h5>
        <h5><?= $employer[4]?></h5>
        <h5><?= $employer[5]?></h5>
-       <h5><?= $active?></h5>
-       <a href="employer_active.php?del_err=<?=$employer_id?>".php">Innactif</a>
+       <h5><?= $statue?></h5>
+       <a href="employer_historique.php?">historique</a>
        <a href="employer_update.php?update=<?=$employer_id?>.php">Modifer</a>
             </div>
     <?php }}else header('Location:index.php?grade_err'); // commenter ici ?>
