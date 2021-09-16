@@ -13,8 +13,8 @@ require_once 'database.php';
         <input type="text" name="tel">
         <label for="grade">Grade</label>
         <select name="grade">
-        <option value="admin">admin</option>
-        <option value="employé">employé</option>
+            <option value="admin">admin</option>
+            <option value="employé">employé</option>
         </select>
         <label for="password">Mot de passe</label>
         <input type="password" name="password">

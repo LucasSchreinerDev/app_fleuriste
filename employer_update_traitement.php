@@ -2,7 +2,7 @@
 session_start();
 require_once 'database.php';
 
-if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"])&& !empty($_POST["nom"])&& !empty($_POST["tel"]) && !empty($_POST["grade"] && !empty($_POST["statut"]))) {
+if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) && !empty($_POST["nom"]) && !empty($_POST["tel"]) && !empty($_POST["grade"] && !empty($_POST["statut"]))) {
 
     $ids = intval(htmlentities($_POST["id"]));
     $email = htmlentities($_POST["email"]);
@@ -12,26 +12,26 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"])&
     $grade = htmlentities($_POST["grade"]);
     $statut = htmlentities($_POST["statut"]);
 
-    if ($statut === "actif"){
+    if ($statut === "actif") {
         $statut = 1;
     }
-    if ($statut === "innactif"){
+    if ($statut === "innactif") {
         $statut = 0;
     }
-    if ($statut === "conge"){
+    if ($statut === "conge") {
         $statut = 2;
     }
-    if ($statut === "vacance"){
+    if ($statut === "vacance") {
         $statut = 3;
     }
-    if ($statut === "arret_maladie"){
+    if ($statut === "arret_maladie") {
         $statut = 4;
     }
 
-    if ($grade === "admin"){
-        $grade = 3 ;
-    }else{
-        $grade = 1 ;
+    if ($grade === "admin") {
+        $grade = 3;
+    } else {
+        $grade = 1;
     }
 
 
@@ -42,9 +42,9 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"])&
         "surname" => $nom,
         "telephone" => $mobile,
         "grade" => $grade,
-        "active"=> $statut,
+        "active" => $statut,
         "id" => $ids
     ));
     $final = $query->fetch();
     header("Location:liste_employer.php");
-}else echo "noob";
+} else echo "noob";

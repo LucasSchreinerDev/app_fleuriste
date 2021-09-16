@@ -25,4 +25,4 @@ if (isset($_SESSION['user'])) {
             header('Location:liste_employer.php');
         } else echo "noob";
     } else header('Location:liste_employer.php');
-}else header("Location:index.php");
+} else header("Location:index.php");

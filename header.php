@@ -1,15 +1,15 @@
 <?php
 session_start();
 require_once 'database.php';
-$sessionid= intval($_SESSION['user']);
+$sessionid = intval($_SESSION['user']);
 
 $rank = $bdd->prepare("SELECT * from users where id = :session");
 $rank->execute(array(
-    'session'=> $sessionid,
+    'session' => $sessionid,
 ));
 $user = $rank->fetch();
 
-if ($user["grade"] >= 3){
+if ($user["grade"] >= 3) {
     $admin = "admin";
 }
 ?>
@@ -30,8 +30,7 @@ if ($user["grade"] >= 3){
         <h1>La boite à fleurs</h1>
     </div>
     <nav>
-        <?php if (isset($admin))
-        { ?>
+        <?php if (isset($admin)) { ?>
             <a href="liste_employer.php">Employée</a>
         <?php } ?>
         <a href="client.php">Client</a>
@@ -42,10 +41,10 @@ if ($user["grade"] >= 3){
     </nav>
 </header>
 <main>
-    <b>Bienvenu ! <?= $user[1]?><br></b>
+    <b>Bienvenu ! <?= $user[1] ?><br></b>
     <b>Vous êtes <?php
         if (isset($admin)) {
             echo $admin;
-        }else echo "Employée";
+        } else echo "Employée";
         ?></b>
     <a href="logout.php">logout</a>

@@ -11,14 +11,14 @@
 <body>
 <header></header>
 <main>
-<form action="loggin_traitement.php" method="post">
-    <label for="email">Email</label>
-<input type="email" name="email">
-    <label for="password">Password</label>
-<input type="password" name="password">
-    <input type="submit">
-</form>
-<a href="register.php">S'enregistrer</a>
+    <form action="loggin_traitement.php" method="post">
+        <label for="email">Email</label>
+        <input type="email" name="email">
+        <label for="password">Password</label>
+        <input type="password" name="password">
+        <input type="submit">
+    </form>
+    <a href="register.php">S'enregistrer</a>
 </main>
 <footer>
 </footer>

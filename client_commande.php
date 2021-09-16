@@ -7,16 +7,16 @@ if (!isset($_SESSION['user'])) {
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
 
-if (!empty($_GET['client']) && isset($_GET['client'])){
-    $id =htmlentities($_GET['client']);
+if (!empty($_GET['client']) && isset($_GET['client'])) {
+    $id = htmlentities($_GET['client']);
     $select = $bdd->prepare('SELECT nom, prenom, telephone,email,adresse,ville FROM client WHERE id = :id');
     $select->execute(array(
         'id' => $id,
     ));
-    $data= $select->fetch();
+    $data = $select->fetch();
 
     $select = $bdd->prepare(
-   "SELECT num_commande,date_livraison ,date_commande, lieu_livraison, nom, prenom,telephone, email , adresse , client.ville 
+        "SELECT num_commande,date_livraison ,date_commande, lieu_livraison, nom, prenom,telephone, email , adresse , client.ville 
     FROM commande 
     INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
     INNER JOIN client ON commande.id_client = client.id 
@@ -25,8 +25,8 @@ if (!empty($_GET['client']) && isset($_GET['client'])){
     WHERE commande.id_client = :id 
     AND date_livraison <= :date;");
     $select->execute(array(
-        'id'=> $id,
-        'date'=>$date,
+        'id' => $id,
+        'date' => $date,
     ));
     $commandes = $select->fetchAll();
 }
@@ -55,31 +55,31 @@ if (!empty($_GET['client']) && isset($_GET['client'])){
     </nav>
 </header>
 <main>
-<h1>Client</h1>
-   nom :<?= $data['nom']?><br>
-   prenom : <?= $data['prenom']?><br>
-   adresse : <?= $data['adresse'].", "." ".$data['ville']?><br>
-    télephone :<?= $data['telephone']?><br>
-    email :<?= $data['email']?><br>
-<h1>Commande en cours</h1>
+    <h1>Client</h1>
+    nom :<?= $data['nom'] ?><br>
+    prenom : <?= $data['prenom'] ?><br>
+    adresse : <?= $data['adresse'] . ", " . " " . $data['ville'] ?><br>
+    télephone :<?= $data['telephone'] ?><br>
+    email :<?= $data['email'] ?><br>
+    <h1>Commande en cours</h1>
     <table>
-    <tr>
-        <th>Numéro et ligne de commande</th>
-        <th>Date de commande</th>
-        <th>Date de livraison</th>
-        <th>Adresse de livraison</th>
-    </tr>
-    <?php foreach ($commandes as $commande){
-    ?>
         <tr>
-            <td><?= $commande['num_commande'] ?></td>
-            <td><?= $commande['date_commande'] ?></td>
-            <td><?= $commande['date_livraison']?></td>
-            <td><?= $commande['lieu_livraison'].' '.$commande['ville']?></td>
+            <th>Numéro et ligne de commande</th>
+            <th>Date de commande</th>
+            <th>Date de livraison</th>
+            <th>Adresse de livraison</th>
         </tr>
+        <?php foreach ($commandes as $commande) {
+            ?>
+            <tr>
+                <td><?= $commande['num_commande'] ?></td>
+                <td><?= $commande['date_commande'] ?></td>
+                <td><?= $commande['date_livraison'] ?></td>
+                <td><?= $commande['lieu_livraison'] . ' ' . $commande['ville'] ?></td>
+            </tr>
 
-        <?php }  ?>
-</table>
+        <?php } ?>
+    </table>
     COMMANDE PASSÉE
 </body>
 </html>
