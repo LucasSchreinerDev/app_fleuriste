@@ -6,8 +6,11 @@ $select = $bdd->prepare("SELECT `libelle`, `stock`, `raison_soc` FROM variete IN
 $select->execute();
 $fleurs = $select->fetchAll();
 ?>
-    <h2>Les livraisons à venir</h2>
-    <a href="commande_past.php">Commande passée</a>
+    <h1>Fleurs et leurs stocks</h1>
+    <a href="add_fleur.php">Ajouter une variéter de fleurs</a><br>
+    <a href="add_fleur_couleur.php">Ajouter une couleur de fleurs</a><br>
+    <a href="add_fleur_stock.php">Ajouter un nouveau stock</a>
+
     <div class="table">
         <table>
             <tr>

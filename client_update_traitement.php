@@ -19,19 +19,33 @@ if (!empty($_POST["id"]) && !empty($_POST["prenom"]) && !empty($_POST["nom"]) &&
         $grade = 1;
     }
 
-    $query = $bdd->prepare("UPDATE `client` SET prenom = :prenom, nom = :nom, telephone = :telephone, email = :email, adresse = :adresse, ville = :ville, code_postal = :code_postal WHERE client.id = :id");
-    $query->execute(array(
-        "prenom" => $prenom,
-        "nom" => $nom,
-        "telephone" => $telephone,
-        "email" => $email,
-        "adresse" => $adresse,
-        "ville" => $ville,
-        "code_postal" => $code_postal,
-        "id" => $ids
-    ));
-    $final = $query->fetch();
-    header("Location:client.php");
-} else {
-    header("Location:client.php?err_form");
-}
+    $check = $bdd->prepare('SELECT * FROM client WHERE email = ?');
+    $check->execute(array($email));
+    $data = $check->fetch();
+    $row = $check->rowCount();
+    $email = strtolower($email);
+    if ($row == 0) {
+        if (strlen($prenom) <= 50) {
+            if (strlen($nom) <= 50) {
+                if (strlen($telephone) <= 14) {
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $query = $bdd->prepare("UPDATE `client` SET prenom = :prenom, nom = :nom, telephone = :telephone, email = :email, adresse = :adresse, ville = :ville, code_postal = :code_postal WHERE client.id = :id");
+                        $query->execute(array(
+                            "prenom" => $prenom,
+                            "nom" => $nom,
+                            "telephone" => $telephone,
+                            "email" => $email,
+                            "adresse" => $adresse,
+                            "ville" => $ville,
+                            "code_postal" => $code_postal,
+                            "id" => $ids
+                        ));
+                        $final = $query->fetch();
+                        header("Location:client.php");
+                    } else header('Location:client.php?add_err=mail');
+                } else header('Location:client.php?add_err=phone');
+            } else header('Location:client.php?add_err=lname');
+        } else header('Location:client.php?add_err=fname');
+    } else header('Location:client.php?add_err=findclient');
+} else header('Location:client.php?add_err=form');
+/* ici */

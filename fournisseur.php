@@ -13,10 +13,14 @@ $datas = $query->fetchAll()
     <h2>Liste des fournisseurs</h2>
 
     <?php foreach ($datas as $data) { ?>
-        <p>raison sociale : <?= $data["raison_soc"] ?> </p>
-        <p>nom : <?= $data["nom"] ?> </p>
-        <p>prenom : <?= $data["prenom"] ?> </p>
-        <p>télephone : <?= $data["tel"] ?> </p>
+        <div class="container_employer">
+        <h5>raison sociale : <?= $data["raison_soc"] ?> </h5>
+        <h5>nom : <?= $data["nom"] ?> </h5>
+        <h5>prenom : <?= $data["prenom"] ?> </h5>
+        <h5>télephone : <?= $data["tel"] ?> </h5>
+            <a href="fournisseur_update.php?update=<?=$data["id"]?>">Modifier</a>
+            <a href="fournisseur_del.php">Supprimer</a>
+        </div>
     <?php } ?>
 </div>
 <?php

@@ -42,30 +42,30 @@ if (!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom'])
                                             'email' => $email,
                                             'password' => $password,
                                         ));
-                                        header('Location:liste_employer.php?loggin_err=success');/*passe alors que normalement ne devrait pas */
+                                        header('Location:liste_employer.php?loggin_err=success');/* bug ne passe pas loggin_err*/
                                     } else
                                         header('Location:add_employer.php?err_passwordcost');
                                 } else
-                                    header('Location:add_employer.php?reg_err=password');
+                                    header('Location:add_employer.php?add_err=password');
 
                         } else
                             header('Location:add_employer.php?tel_err');
                     } else
-                        header('Location:add_employer.php?reg_err=password_lenght');
+                        header('Location:add_employer.php?add_err=password_lenght');
 
                 } else
-                    header('Location:add_employer.php?reg_err=valid');
+                    header('Location:add_employer.php?add_err=validmail');
 
             } else
-                header('Location:add_employer.php?reg_err=email_length');
+                header('Location:add_employer.php?add_err=email_length');
 
         } else
-            header('Location:add_employer.php?reg_err=nom_length');
+            header('Location:add_employer.php?add_err=nom_length');
 
     } else
-        header('Location :add_employer.php?reg_err=nom_length');
+        header('Location :add_employer.php?add_err=nom_length');
 
 } else
-    header('Location:add_employer.php?reg_err=already');
+    header('Location:add_employer.php?add_err=already');
 }else
-    header('Location:add_employer.php?reg_err=emptyfield');
+    header('Location:add_employer.php?add_err=emptyfield');
