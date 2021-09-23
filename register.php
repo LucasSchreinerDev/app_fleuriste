@@ -18,7 +18,7 @@
         <input type="text" name="prenom">
         <label for="nom">Nom</label>
         <input type="tel" name="nom">
-        <label for="tel">Mobile</label>
+        <label for="text">Mobile</label>
         <input type="text" name="tel">
         <label for="password">Mot de passe</label>
         <input type="password" name="password">

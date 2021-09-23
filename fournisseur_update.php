@@ -27,7 +27,6 @@ if (isset($_GET['update']) && !empty(($_GET['update']))) {
         <input name="tel" type="text" value="<?= $data["tel"]?>">
         <input type="submit">
     </form>
-<?php var_dump($data['tel']); ?>
 <?php
 require "footer.php";
 ?>

@@ -40,4 +40,4 @@ if (!empty($_POST["id"]) &&!empty($_POST["raison_soc"]) && !empty($_POST["nom"])
 }else {
     header('Location:fournisseur.php?reg_err=emptyfield');
 }
-    ?>
+  /*verif numero + employer update fini*/

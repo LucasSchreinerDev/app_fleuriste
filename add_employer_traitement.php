@@ -25,47 +25,43 @@ if (!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom'])
     if ($row == 0) {
         if (strlen($nom) <= 100) {
             if (strlen($prenom) <= 100) {
-                if (strlen($email) <= 100) {
-                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        if ($grade <= 3) {
-                            if (strlen($mobile) <= 14){
-                                if (strlen($password) > 6 && strlen($password) < 32) {
-                                    if ($password === $confirm_password) {
-                                        $cost = ['cost' => 12];
-                                        $password = password_hash($password, PASSWORD_BCRYPT, $cost);
-                                        $insert = $bdd->prepare('INSERT INTO users(firstname, surname, telephone, email, grade, password) VALUES(:prenom, :nom , :mobile,  :email, :grade,:password)');
-                                        $insert->execute(array(
-                                            'nom' => $nom,
-                                            'prenom' => $prenom,
-                                            'mobile' => $mobile,
-                                            'grade' => $grade,
-                                            'email' => $email,
-                                            'password' => $password,
-                                        ));
-                                        header('Location:liste_employer.php?loggin_err=success');/* bug ne passe pas loggin_err*/
-                                    } else
-                                        header('Location:add_employer.php?err_passwordcost');
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    if (strlen($mobile) <= 14 && is_numeric($mobile)) {
+                        if (strlen($password) > 6 && strlen($password) < 32) {
+                            if (preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $password) == 1) {
+                                if ($password === $confirm_password) {
+                                    $cost = ['cost' => 12];
+                                    $password = password_hash($password, PASSWORD_BCRYPT, $cost);
+                                    $insert = $bdd->prepare('INSERT INTO users(firstname, surname, telephone, email, grade, password) VALUES(:prenom, :nom , :mobile,  :email, :grade,:password)');
+                                    $insert->execute(array(
+                                        'nom' => $nom,
+                                        'prenom' => $prenom,
+                                        'mobile' => $mobile,
+                                        'grade' => $grade,
+                                        'email' => $email,
+                                        'password' => $password,
+                                    ));
+                                    header('Location:liste_employer.php?loggin=success');/* bug ne passe pas loggin_err*/
                                 } else
-                                    header('Location:add_employer.php?add_err=password');
-
+                                    header('Location:add_employer.php?reg_err=confirm_password');
+                            } else {
+                                header('Location:add_employer.php?reg_err=password_char');
+                            }
                         } else
-                            header('Location:add_employer.php?tel_err');
+                            header('Location:add_employer.php?reg_err=password_lenght');
+
                     } else
-                        header('Location:add_employer.php?add_err=password_lenght');
-
+                        header('Location:add_employer.php?reg_err=mobile_err');
                 } else
-                    header('Location:add_employer.php?add_err=validmail');
-
+                    header('Location:add_employer.php?reg_err=email_err');
             } else
-                header('Location:add_employer.php?add_err=email_length');
+                header('Location:add_employer.php?add_err=firstname_length');
 
         } else
-            header('Location:add_employer.php?add_err=nom_length');
+            header('Location :add_employer.php?reg_err=lastname_length');
 
     } else
-        header('Location :add_employer.php?add_err=nom_length');
-
+        header('Location:add_employer.php?reg_err=already');
 } else
-    header('Location:add_employer.php?add_err=already');
-}else
-    header('Location:add_employer.php?add_err=emptyfield');
+    header('Location:add_employer.php?reg_err=emptyfield');
+/* ici */

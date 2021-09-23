@@ -22,22 +22,42 @@ if (!empty($_POST['firstname']) && isset($_POST['firstname']) && !empty($_POST['
     if ($row == 0) {
         if (strlen($firstname) <= 50) {
             if (strlen($lastname) <= 50) {
-                if (strlen($phone) <= 14) {
+                if (strlen($phone) <= 14 && is_numeric($phone)) {
                     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $insert = $bdd->prepare('INSERT INTO client(nom, prenom, telephone,email,adresse,ville,code_postal) VALUES(:nom, :prenom, :telephone,:email,:adresse,:ville, :cp)');
-                        $insert->execute(array(
-                            'prenom' => $firstname,
-                            'nom' => $lastname,
-                            'email' => $email,
-                            'telephone' => $phone,
-                            'adresse' => $address,
-                            'ville' => $city,
-                            'cp' => $cp
-                        ));
-                        header('Location:client.php?add_err=success');
-                    } else header('Location:client.php?add_err=mail');
-                } else header('Location:client.php?add_err=phone');
-            } else header('Location:client.php?add_err=lname');
-        } else header('Location:client.php?add_err=fname');
-    } else header('Location:client.php?add_err=findclient');
-} else header('Location:client.php?add_err=form');
+                        if (strlen($city) < 100) {
+                            if (is_numeric($cp)) {
+                                $insert = $bdd->prepare('INSERT INTO client(nom, prenom, telephone,email,adresse,ville,code_postal) VALUES(:nom, :prenom, :telephone,:email,:adresse,:ville, :cp)');
+                                $insert->execute(array(
+                                    'prenom' => $firstname,
+                                    'nom' => $lastname,
+                                    'email' => $email,
+                                    'telephone' => $phone,
+                                    'adresse' => $address,
+                                    'ville' => $city,
+                                    'cp' => $cp
+                                ));
+                                header('Location:client.php?add_err=success');
+                            } else {
+                                header('Location:client.php?add_err=cp_numeric');
+                            }
+                        } else {
+                            header('Location:client.php?add_err=city_lenght');
+                        }
+                    } else {
+                        header('Location:client.php?add_err=mail');
+                    }
+                } else {
+                    header('Location:client.php?add_err=phone_int');
+                }
+            } else {
+                header('Location:client.php?add_err=lastname_lenght');
+            }
+        } else {
+            header('Location:client.php?add_err=firstname_lenght');
+        }
+    } else {
+        header('Location:client.php?add_err=already');
+    }
+} else {
+    header('Location:client.php?add_err=emptyfield');
+}
