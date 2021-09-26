@@ -19,7 +19,7 @@ if (!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom'])
         if (strlen($nom) <= 100) {
             if (strlen($prenom) <= 100) {
                     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        if (strlen($mobile) <= 14 && is_numeric($mobile)) {
+                        if (strlen($mobile) <= 10 && is_numeric($mobile)) {
                             if (strlen($password) > 6 && strlen($password) < 32) {
                                 if (preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $password) == 1) {
                                     if ($password === $confirm_password) {

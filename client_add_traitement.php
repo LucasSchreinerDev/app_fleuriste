@@ -22,7 +22,7 @@ if (!empty($_POST['firstname']) && isset($_POST['firstname']) && !empty($_POST['
     if ($row == 0) {
         if (strlen($firstname) <= 50) {
             if (strlen($lastname) <= 50) {
-                if (strlen($phone) <= 14 && is_numeric($phone)) {
+                if (strlen($phone) <= 10 && is_numeric($phone)) {
                     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                         if (strlen($city) < 100) {
                             if (is_numeric($cp)) {

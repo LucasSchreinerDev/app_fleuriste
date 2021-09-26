@@ -19,7 +19,7 @@ $datas = $query->fetchAll()
         <h5>prenom : <?= $data["prenom"] ?> </h5>
         <h5>télephone : <?= $data["tel"] ?> </h5>
             <a href="fournisseur_update.php?update=<?=$data["id"]?>">Modifier</a>
-            <a href="fournisseur_del.php">Supprimer</a>
+            <a href="fournisseur_del.php?del=<?=$data['id']?>">Supprimer</a>
         </div>
     <?php } ?>
 </div>

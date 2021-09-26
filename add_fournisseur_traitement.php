@@ -19,7 +19,7 @@ if (!empty($_POST["raison_soc"]) && !empty($_POST["nom"]) && !empty($_POST["pren
         if (strlen($raison_soc) <= 100) {
             if (strlen($nom) <= 100) {
                 if (strlen($prenom) <= 100) {
-                    if (strlen($tel) <= 14 && is_numeric($tel)) {
+                    if (strlen($tel) <= 10 && is_numeric($tel)) {
                         $query = $bdd->prepare('INSERT INTO fournisseur(raison_soc, nom, prenom, tel) VALUES (:raison_soc, :nom, :prenom, :tel)');
                         $query->execute(array(
                             'raison_soc' => $raison_soc,

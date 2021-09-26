@@ -15,7 +15,7 @@ if (!empty($_POST["id"]) && !empty($_POST["prenom"]) && !empty($_POST["nom"]) &&
 
         if (strlen($prenom) <= 50) {
             if (strlen($nom) <= 50) {
-                if (strlen($telephone) <= 14 && is_numeric($telephone)) {
+                if (strlen($telephone) <= 10 && is_numeric($telephone)) {
                     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                         if (strlen($ville) < 100) {
                             if (is_numeric($code_postal)) {

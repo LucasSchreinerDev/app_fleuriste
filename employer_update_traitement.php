@@ -37,7 +37,7 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) 
     if (strlen($nom) <= 100) {
         if (strlen($prenom) <= 100) {
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                if (strlen($mobile) <= 14 && is_numeric($mobile)) {
+                if (strlen($mobile) <= 10 && is_numeric($mobile)) {
                     $query = $bdd->prepare("UPDATE `users` SET email = :email, firstname = :firstname, surname = :surname, telephone = :telephone, grade = :grade, active = :active WHERE users.id = :id");
                     $query->execute(array(
                         "email" => $email,

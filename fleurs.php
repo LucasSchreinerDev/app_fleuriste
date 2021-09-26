@@ -1,8 +1,8 @@
 <?php
 require_once "header.php";
 require_once 'database.php';
-$select = $bdd->prepare("SELECT couleur.libelle, variete.libelle, `stock`, `prix`, `raison_soc`, fournisseur.id, fleur_fournisseur.id_fleur 
-FROM variete 
+$select = $bdd->prepare("SELECT fournisseur.id, couleur.libelle, variete.libelle, `stock`, `prix`, `raison_soc`, fournisseur.id, fleur_fournisseur.id_fleur 
+    FROM variete 
     INNER JOIN `fleur` ON variete.id = fleur.id_variete 
     INNER JOIN couleur ON fleur.id_couleur = couleur.id
     INNER JOIN fleur_fournisseur ON fleur.id_fleur = fleur_fournisseur.id_fleur 
@@ -33,7 +33,7 @@ $fleurs = $select->fetchAll();
                 <td><?= $fleur['prix'] ?>€</td>
                 <td><?= $fleur['stock'] ?></td>
                 <td><?= $fleur['raison_soc'] ?></td>
-                <td><a href="stock_gestion.php?update=<?=$fleur[6]?>">Modifier</a></td>
+                <td><a href="stock_gestion.php?update=<?=$fleur[7]?>&fournisseur=<?=$fleur[0]?>">Modifier</a></td>
             </tr>
             <?php } ?>
         </table>

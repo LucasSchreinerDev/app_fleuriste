@@ -1,6 +1,6 @@
 <?php
 require 'database.php';
-if (!empty($_POST["id"]) &&!empty($_POST["raison_soc"]) && !empty($_POST["nom"]) && !empty($_POST["prenom"]) && !empty($_POST["tel"])) {
+if (!empty($_POST["id"]) && !empty($_POST["raison_soc"]) && !empty($_POST["nom"]) && !empty($_POST["prenom"]) && !empty($_POST["tel"])) {
 
     $id = htmlentities(intval($_POST['id']));
     $raison_soc = htmlentities($_POST['raison_soc']);
@@ -14,10 +14,10 @@ if (!empty($_POST["id"]) &&!empty($_POST["raison_soc"]) && !empty($_POST["nom"])
     ));
     $data = $check->fetch();
     $row = $check->rowCount();
-
+    if (strlen($raison_soc) <= 100) {
         if (strlen($nom) <= 100) {
             if (strlen($prenom) <= 100) {
-                if (strlen($tel) <= 14) {
+                if (strlen($tel) <= 10 && is_numeric($tel)) {
                     $query = $bdd->prepare("UPDATE `fournisseur` SET raison_soc = :raison_soc, nom = :nom, prenom = :prenom, tel = :tel WHERE fournisseur.id = :id");
                     $query->execute(array(
                         'id' => $id,
@@ -37,7 +37,10 @@ if (!empty($_POST["id"]) &&!empty($_POST["raison_soc"]) && !empty($_POST["nom"])
         } else {
             header('location:fournisseur.php?reg_err=lastname');
         }
-}else {
+    } else {
+        header('Location:fournisseur.php?reg_err=raisonsoc');
+    }
+} else {
     header('Location:fournisseur.php?reg_err=emptyfield');
 }
-  /*verif numero + employer update fini*/
+/*verif numero + employer update fini*/
