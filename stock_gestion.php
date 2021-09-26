@@ -22,12 +22,13 @@ if (!empty($_GET['update']) && !empty([$_GET['fournisseur']])){
 
 <br><a href="stock_gestion.php">retour</a>
 <h1>Modifier le stock</h1>
-    <form action="stock_gestion.php" method="post">
+    <form action="stock_gestion_traitement.php" method="post">
         <label for="stock">Stock</label>
-        <input type="number" name="stock" value="<?= $stock["stock"]?>">
+        <input type="hidden" name="fournisseur_id" value="<?= $fournisseur ?>">
+        <input type="number" name="stock" value="<?=$stock["stock"]?>">
         <input type="submit">
     </form>
-
 <?php 
 require "footer.php";
 ?>
+
