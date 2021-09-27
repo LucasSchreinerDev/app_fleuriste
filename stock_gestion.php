@@ -24,6 +24,7 @@ if (!empty($_GET['update']) && !empty([$_GET['fournisseur']])){
 <h1>Modifier le stock</h1>
     <form action="stock_gestion_traitement.php" method="post">
         <label for="stock">Stock</label>
+        <input type="hidden" name="fleur_id" value="<?= $id ?>">
         <input type="hidden" name="fournisseur_id" value="<?= $fournisseur ?>">
         <input type="number" name="stock" value="<?=$stock["stock"]?>">
         <input type="submit">

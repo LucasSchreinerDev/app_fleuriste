@@ -1,6 +1,5 @@
 <?php
 require "header.php";
-require "database.php";
 
 $query = $bdd->prepare('SELECT * FROM fournisseur');
 $query->execute();

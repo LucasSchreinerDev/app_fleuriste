@@ -1,6 +1,11 @@
 <?php
 session_start();
 require_once 'database.php';
+
+if (!isset($_SESSION['user'])) {
+    header('Location:index.php?logg_err');
+}
+
 $sessionid = intval($_SESSION['user']);
 
 $rank = $bdd->prepare("SELECT * from users where id = :session");

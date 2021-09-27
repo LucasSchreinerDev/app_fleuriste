@@ -10,6 +10,7 @@ $select = $bdd->prepare("SELECT fournisseur.id, couleur.libelle, variete.libelle
 ");
 $select->execute();
 $fleurs = $select->fetchAll();
+
 ?>
     <h1>Fleurs en stocks</h1>
     <a href="add_fleur.php">Ajouter une fleur</a><br>
@@ -27,7 +28,7 @@ $fleurs = $select->fetchAll();
 
                 as $fleur){ ?>
             </tr>
-            <tr>
+            <tr<?php if ($fleur["stock"] < 25) { echo " class='alert-rouge'";}?>>
                 <td><?= $fleur['libelle'] ?></td>
                 <td><?= $fleur['0'] ?></td>
                 <td><?= $fleur['prix'] ?>€</td>
