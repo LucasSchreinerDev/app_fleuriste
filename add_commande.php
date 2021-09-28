@@ -56,3 +56,4 @@ $fleurs = $queryF->fetchAll();
     <input type="hidden" name="id_employer" value="<?= $_SESSION['user'] ?>">
     <input type="submit">
 </form>
+<?php require 'footer.php'?>

@@ -1,7 +1,12 @@
 <?php
 require_once 'header.php';
 require_once 'database.php';
+if ($user["grade"] < 3){
+    header('Location:commande.php?grade=err');
+}
 ?>
+<br>
+    <a href="liste_employer.php">Retour</a>
     <form action="add_employer_traitement.php" method="post">
         <label for="email">Email</label>
         <input type="email" name="email">

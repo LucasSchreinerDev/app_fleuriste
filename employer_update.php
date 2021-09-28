@@ -2,6 +2,9 @@
 require 'header.php';
 require_once 'database.php';
 
+      if ($user["grade"] < 3){
+                         header('Location:commande.php?grade=err');
+            }
     if (isset($_GET['update']) && !empty(($_GET['update']))) {
         $id = htmlspecialchars($_GET['update']);
         $ids = intval($id);

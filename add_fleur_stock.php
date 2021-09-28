@@ -10,6 +10,8 @@ $queryb->execute();
 $fleurs = $queryb->fetchAll();
 //SELECT * FROM variete INNER JOIN fleur ON variete.id = fleur.variete_id
 ?>
+    <br>
+    <a href="fleurs.php">Retour</a>
 <h1>Ajouter un nouveau stock</h1>
 <form action="add_fleur_stock_traitement.php" method="post">
     <label for="variete">Variete</label>

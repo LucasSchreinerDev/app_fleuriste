@@ -99,10 +99,11 @@ $employers = $query->fetchAll();
             <h5><?= $employer[4] ?></h5>
             <h5><?= $employer[5] ?></h5>
             <h5><?= $statue ?></h5>
-            <a href="employer_historique.php?">historique</a>
+            <a href="employer_historique.php?historique=<?= $employer_id ?>">historique</a>
             <a href="employer_update.php?update=<?= $employer_id ?>.php">Modifer</a>
             <a href="employer_del.php?del=<?=$employer_id?>">Supprimer</a>
         </div>
     <?php }
     } else header('Location:index.php?grade_err'); // commenter ici ?>
 </main>
+<?php require 'footer.php'?>

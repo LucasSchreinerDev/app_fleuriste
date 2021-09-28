@@ -4,10 +4,11 @@ require 'header.php';
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
 
-$select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix 
+$select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
                                  FROM commande
                                  INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
                                  INNER JOIN client ON commande.id_client = client.id 
+                                 INNER JOIN users ON commande.id_users = users.id    
                                  INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur 
                                  INNER JOIN variete ON fleur.id_variete = variete.id 
                                  INNER JOIN couleur ON fleur.id_couleur = couleur.id 
@@ -16,6 +17,9 @@ $select->execute(array(
     'date' => $date,
 ));
 $commandes = $select->fetchAll();
+
+
+
 ?>
     <h2>Les livraisons à venir</h2>
     <a href="commande_past.php">Commande passée</a><br>
@@ -29,8 +33,10 @@ $commandes = $select->fetchAll();
                 <h5>Nom & prenom client : <?= $commande[6]." ".$commande[5]?></h5>
                 <h5>Telephone : <?= $commande[9]?></h5>
                 <h5>Quantité : <?= $commande[10]?></h5>
-                <h5>Total :</h5>
-                <h5>detail fleur :<?= $commande[7]." ".$commande[8]?></h5>
+                <h5>Total : <?php $total = $commande[10] * $commande[11]; echo $total."€" ?></h5>
+                <h5>detail fleur : <?= $commande[7]." ".$commande[8]?></h5>
+                <h6>Employer en charge : <?= $commande[12]." ".$commande[13]?></h6>
+                <a href="commande_del.php?del=<?=$commande[0]?>">Supprimer</a>
     </div>
     <?php } ?>
 </main>

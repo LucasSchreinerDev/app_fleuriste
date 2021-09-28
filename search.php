@@ -1,6 +1,10 @@
 <?php
 require 'header.php';
 
+if (!empty($_POST['search'])){
+    $num_commande = $_POST['search'];
+    $num_commande = intval($num_commande);
+
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
 
@@ -12,20 +16,22 @@ $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adr
                                  INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur 
                                  INNER JOIN variete ON fleur.id_variete = variete.id 
                                  INNER JOIN couleur ON fleur.id_couleur = couleur.id 
-                                 WHERE date_livraison <= :date");
+                                 WHERE num_commande = :num_commande");
 $select->execute(array(
-    'date' => $date,
+    'num_commande' => $num_commande,
 ));
-$commandes = $select->fetchAll();
+$commande = $select->fetch();
+$row = $select->rowCount();
 
+if ($row === 0){
+    header('Location:commande.php?err=cannotfind');
+}
 
 
 ?>
-    <br>
-    <a href="commande.php">Retour</a>
-    <h2>Les livraisons passée</h2>
-    <a href="commande.php">Commande à venir</a><br>
-<?php foreach ($commandes as $commande) {?>
+    <h2>Commande :</h2>
+    <a href="commande_past.php">Commande passée</a><br>
+    <a href="add_commande.php">Ajoutée une commande</a>
     <div class="commande">
         <h5>Numéro de commande : <?= $commande[0]?></h5>
         <h5>Date de livraison : <?= $commande[1] ?></h5>
@@ -36,9 +42,13 @@ $commandes = $select->fetchAll();
         <h5>Quantité : <?= $commande[10]?></h5>
         <h5>Total : <?php $total = $commande[10] * $commande[11]; echo $total."€" ?></h5>
         <h5>detail fleur : <?= $commande[7]." ".$commande[8]?></h5>
+        <h6>Employer en charge : <?= $commande[12]." ".$commande[13]?></h6>
+        <a href="commande_del.php?del=<?=$commande[0]?>">Supprimer</a>
     </div>
-<?php } ?>
     </main>
 <?php
 require_once "footer.php";
+}else{
+    header('Location:commande.php?err=empty');
+}
 ?>
