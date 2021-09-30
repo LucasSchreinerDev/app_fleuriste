@@ -30,7 +30,7 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
     $commandes = $select->fetchAll();
     $row = $select->rowCount();
     if ($row === 0){
-        header('Location:client.php?add_err=notfind');
+        header('Location:client.php?');
     }
 
     $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
