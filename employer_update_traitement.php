@@ -2,6 +2,7 @@
 session_start();
 require_once 'database.php';
 
+
 if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) && !empty($_POST["nom"]) && !empty($_POST["tel"]) && !empty($_POST["grade"] && !empty($_POST["statut"]))) {
 
     $ids = intval(htmlentities($_POST["id"]));
@@ -12,7 +13,6 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) 
     $grade = htmlentities($_POST["grade"]);
     $grade = intval($grade);
     $statut = htmlentities($_POST["statut"]);
-    $statut = intval($statut);
     if ($statut === "actif") {
         $statut = 1;
     }
@@ -49,6 +49,7 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) 
                         "id" => $ids
                     ));
                     $final = $query->fetch();
+                    var_dump($statut);
                     header("Location:liste_employer.php");
                 } else {
                     header('Location:liste_employer.php?tel_err');

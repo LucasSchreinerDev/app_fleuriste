@@ -21,24 +21,45 @@ $commandes = $select->fetchAll();
 
 
 ?>
-    <br>
-    <a href="commande.php">Retour</a>
-    <h2>Les livraisons passée</h2>
-    <a href="commande.php">Commande à venir</a><br>
-<?php foreach ($commandes as $commande) {?>
-    <div class="commande">
-        <h5>Numéro de commande : <?= $commande[0]?></h5>
-        <h5>Date de livraison : <?= $commande[1] ?></h5>
-        <h5>Date de commande : <?= $commande[2]?></h5>
-        <h5>Adresse de livraison : <?= $commande[3]." ". $commande[4]?></h5>
-        <h5>Nom & prenom client : <?= $commande[6]." ".$commande[5]?></h5>
-        <h5>Telephone : <?= $commande[9]?></h5>
-        <h5>Quantité : <?= $commande[10]?></h5>
-        <h5>Total : <?php $total = $commande[10] * $commande[11]; echo $total."€" ?></h5>
-        <h5>detail fleur : <?= $commande[7]." ".$commande[8]?></h5>
+<h1 class="text-3xl text-center mt-5 text-black pb-6">Liste des commandes passée</h1>
+<div class="w-full mt-12">
+    <button class="mb-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+        <a href="commande.php">Retour</a>
+    </button>
+    <div class="bg-white overflow-auto">
+        <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+            <thead>
+            <tr>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Numéro de commande</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Date de livraison</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Date de commande</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Adresse de livraison</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Nom & prenom client</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Téléphone</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Quantité</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Total</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Detail fleurs</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Employé(e) en charge</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($commandes as $commande) { ?>
+                <tr class="hover:bg-grey-lighter">
+                    <td class="py-4 px-6 border-b border-grey-light"><?=  $commande[0] ?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"><?=$commande[1] ?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"><?=$commande[2] ?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[3]." ". $commande[4] ?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[6]." ".$commande[5] ?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[9]?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[10]?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"> <?php $total = $commande[10] * $commande[11]; echo $total."€" ?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[7]." ".$commande[8]?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[12]." ".$commande[13]?></td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
     </div>
-<?php } ?>
-    </main>
-<?php
-require_once "footer.php";
-?>
+    <?php
+    require_once "footer.php";
+    ?>

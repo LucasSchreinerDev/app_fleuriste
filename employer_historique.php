@@ -25,9 +25,8 @@ $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adr
                                  INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur 
                                  INNER JOIN variete ON fleur.id_variete = variete.id 
                                  INNER JOIN couleur ON fleur.id_couleur = couleur.id 
-                                 WHERE date_livraison >= :date AND users.id = :id");
+                                 WHERE users.id = :id");
 $select->execute(array(
-    'date' => $date,
     'id' => $id,
 ));
 $commandes = $select->fetchAll();

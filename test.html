@@ -1,31 +1,23 @@
 <?php
-session_start();
+
+require_once "header.php";
 require_once 'database.php';
 
-if (!isset($_SESSION['user'])) {
-    header('Location:index.php?logg_err');
-}
+$insert = $bdd->prepare("SELECT * FROM `client`");
+$insert->execute(array());
+$clients = $insert->fetchAll();
 
-$sessionid = intval($_SESSION['user']);
-
-$rank = $bdd->prepare("SELECT * from users where id = :session");
-$rank->execute(array(
-    'session' => $sessionid,
-));
-$user = $rank->fetch();
-
-if ($user["grade"] >= 3) {
-    $admin = "admin";
-}
 ?>
-<!doctype html>
-<html lang="fr">
+
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Boite à fleurs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailwind Admin Template</title>
+    <meta name="author" content="David Grzyb">
+    <meta name="description" content="">
+
+    <!-- Tailwind -->
     <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <style>
 
@@ -41,18 +33,13 @@ if ($user["grade"] >= 3) {
     </style>
 </head>
 <body class="bg-gray-100 font-family-karla flex">
+
 <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
         <a href="commande.php"><img src="logo.svg"></a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
-        <?php if ($user["grade"] >= 3){ ?>
-            <a href="liste_employer.php" class="flex items-center text-white opacity-75  py-2 pl-4 nav-item">
-            <i class="fas fa-cart-arrow-down mr-3"></i>
-            Employé(e)s
-        </a>
-       <?php } ?>
-        <a href="commande.php" class="flex items-center text-white opacity-75  py-2 pl-4 nav-item">
+        <a href="commande.php" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
             <i class="fas fa-cart-arrow-down mr-3"></i>
             Commandes
         </a>
@@ -70,6 +57,7 @@ if ($user["grade"] >= 3) {
         </a>
     </nav>
 </aside>
+
 <div class="relative w-full flex flex-col h-screen overflow-y-hidden">
     <!-- Desktop Header -->
     <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
@@ -80,10 +68,13 @@ if ($user["grade"] >= 3) {
             </button>
             <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
             <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
-                <a href="logout.php" class="block px-4 py-2 account-link hover:text-white">Déconnexion</a>
+                <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
+                <a href="#" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
             </div>
         </div>
     </header>
+
     <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
@@ -93,13 +84,9 @@ if ($user["grade"] >= 3) {
                 <i x-show="isOpen" class="fas fa-times"></i>
             </button>
         </div>
+
         <!-- Dropdown Nav -->
         <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-            <?php if ($user["grade"] >= 3){ ?>
-            <a href="liste_employer.php" class="flex items-center text-white opacity-75  py-2 pl-4 nav-item">
-                <i class="fas fa-cart-arrow-down mr-3"></i>
-                Employé(e)s
-            </a><?php } ?>
             <a href="commande.php" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
                 <i class="fas fa-cart-arrow-down mr-3"></i>
                 Commandes
@@ -125,14 +112,45 @@ if ($user["grade"] >= 3) {
                 Déconnexion
             </a>
         </nav>
+        <!-- <button class="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+            <i class="fas fa-plus mr-3"></i> New Report
+        </button> -->
     </header>
+
     <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
+            <h1 class="text-3xl text-center mt-5 text-black pb-6">Liste des clients</h1>
+            <div class="w-full mt-12">
+                <div class="bg-white overflow-auto">
+                    <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+                        <thead>
+                        <tr>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Nom & prénom</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Adresse</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Téléphone</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="hover:bg-grey-lighter">
+                            <td class="py-4 px-6 border-b border-grey-light">Lian</td>
+                            <td class="py-4 px-6 border-b border-grey-light">Smith</td>
+                            <td class="py-4 px-6 border-b border-grey-light">622322662</td>
+                            <td class="py-4 px-6 border-b border-grey-light">jonsmith@mail.com</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        <footer class="w-full bg-white text-right p-4">
+        </footer>
+    </div>
 
-
-<!--    <b>Bienvenu ! --><?//= $user[1] ?><!--<br></b>-->
-<!--    <b>Vous êtes --><?php
-//        if (isset($admin)) {
-//            echo $admin;
-//        } else echo "Employée";
-//        ?><!--</b>-->
+</div>
+<!-- AlpineJS -->
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+<!-- Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+</body>
+</html>

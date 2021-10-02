@@ -1,5 +1,6 @@
 <?php
 require "header.php";
+
 if (!isset($_SESSION['user'])) {
     header('Location:index.php');
 }
@@ -32,7 +33,6 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
     if ($row === 0){
         header('Location:client.php?');
     }
-
     $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
                                  FROM commande
                                  INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
@@ -49,7 +49,6 @@ $select->execute(array(
 $commandes_passee = $select->fetchAll();
 }
 ?>
-<br>
 <a href="commande.php">Retour</a>
     <h1>Client</h1>
     nom :<?= $data['nom'] ?><br>
@@ -57,7 +56,6 @@ $commandes_passee = $select->fetchAll();
     adresse : <?= $data['adresse'] . ", " . " " . $data['ville'] ?><br>
     télephone :<?= $data['telephone'] ?><br>
     email :<?= $data['email'] ?><br>
-
     <h1>Commande à venir </h1>
 <?php foreach ($commandes as $commande) {?>
     <div class="commande">
@@ -74,7 +72,6 @@ $commandes_passee = $select->fetchAll();
     </div>
 <?php }?>
     <h1>Commande passée</h1>
-
 <?php foreach ($commandes_passee as $commande_passee) {?>
     <div class="commande">
         <h5>Numéro de commande : <?= $commande_passee[0]?></h5>
