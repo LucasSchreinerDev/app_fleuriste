@@ -36,8 +36,6 @@ if ($user["grade"] >= 3) {
     $query = $bdd->prepare('SELECT id, firstname, surname, telephone, email, grade, active FROM users');
     $query->execute();
     $employers = $query->fetchAll();
-
-
     ?>
 <!doctype html>
 <html lang="fr">
@@ -67,16 +65,15 @@ if ($user["grade"] >= 3) {
         <a href="commande.php"><img src="logo.svg"></a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
-        <?php if ($user["grade"] >= 3){ ?>
-            <a href="liste_employer.php" class="flex items-center text-white opacity-75  py-2 pl-4 nav-item">
-            <i class="fas fa-cart-arrow-down mr-3"></i>
-            Employé(e)s
-        </a>
-       <?php } ?>
-        <a href="commande.php" class="flex items-center text-white opacity-75  py-2 pl-4 nav-item">
+        <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
             <i class="fas fa-cart-arrow-down mr-3"></i>
             Commandes
         </a>
+        <?php if ($user["grade"] >= 3){ ?>
+            <a href="liste_employer.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="far fa-address-book mr-3"></i>
+                Employé(e)s
+            </a><?php } ?>
         <a href="client.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
             <i class="fas fa-address-book mr-3"></i>
             Clients

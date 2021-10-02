@@ -49,8 +49,8 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) 
                         "id" => $ids
                     ));
                     $final = $query->fetch();
-                    var_dump($statut);
-                    header("Location:liste_employer.php");
+                    var_dump($ids);
+//                    header("Location:liste_employer.php");
                 } else {
                     header('Location:liste_employer.php?tel_err');
                 }

@@ -17,7 +17,7 @@ $fleurs = $queryb->fetchAll();
             <button class="mb-2 ml-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                 <a href="add_fleur.php">Retour</a>
             </button>
-            <form action="add_fleur_stock.php" method="POST">
+            <form action="add_fleur_stock_traitement.php" method="POST">
                 <div class="shadow overflow-hidden sm:rounded-md">
                     <div class="px-4 py-5 bg-white sm:p-6">
                         <div class="grid grid-cols-6 gap-6">
