@@ -1,7 +1,7 @@
 <?php
 require 'database.php';
 if (!empty($_POST["id"]) && !empty($_POST["raison_soc"]) && !empty($_POST["nom"]) && !empty($_POST["prenom"]) && !empty($_POST["tel"])) {
-
+    /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
     $id = htmlentities(intval($_POST['id']));
     $raison_soc = htmlentities($_POST['raison_soc']);
     $prenom = htmlentities($_POST['prenom']);

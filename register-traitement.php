@@ -1,6 +1,6 @@
 <?php
 require_once 'database.php';
-
+/*Pour le fonctionnement php allez voir add_commande_traitement, client update.php , database.php , add_employer.php et pour le css header.php plus*/
 if (!empty($_POST['email']) && !empty($_POST['prenom']) && !empty($_POST['nom']) && !empty($_POST["tel"]) && !empty($_POST["password"]) && !empty($_POST['confirm_password'])) {
     $nom = htmlentities($_POST['nom']);
     $prenom = htmlentities($_POST['prenom']);

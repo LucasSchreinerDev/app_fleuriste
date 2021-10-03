@@ -1,6 +1,6 @@
 <?php
 require 'database.php';
-
+/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
 if (!empty($_POST["couleur"])) {
 
     $couleur = htmlentities($_POST["couleur"]);

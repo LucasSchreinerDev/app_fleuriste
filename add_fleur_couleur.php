@@ -4,6 +4,7 @@ require "header.php";
 $query = $bdd->prepare('SELECT * FROM couleur');
 $query->execute();
 $couleurs = $query->fetchAll()
+/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
 ?>
     <h1 class="text-3xl text-center mt-5 text-black pb-6">Ajouter une couleur</h1>
     <div class="mt-10 sm:mt-0">

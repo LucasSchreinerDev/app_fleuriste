@@ -1,7 +1,8 @@
 <?php
 require_once "header.php";
-require_once 'database.php';
 ?>
+
+<!--/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/-->
 <h1 class="text-3xl text-center mt-5 text-black pb-6">Ajouter un(e) client(e)</h1>
 <div class="mt-10 sm:mt-0">
     <div class="flex justify-center">

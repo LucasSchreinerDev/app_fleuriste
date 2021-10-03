@@ -9,6 +9,5 @@ if (!empty($_GET['del'])){
         "id" => $id,
     ));
     header('Location:liste_employer.php?succes');
-
+    /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
 }else header('Location:liste_employer.php?del_err=wrongfield');
-/* securite ici */

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'database.php';
-
+/*Pour le fonctionnement php allez voir add_commande_traitement, client update.php , database.php , add_employer.php et pour le css header.php plus*/
 if (!isset($_SESSION['user'])) {
     header('Location:index.php?logg_err');
 }
@@ -45,10 +45,12 @@ if ($user["grade"] >= 3) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Boite à fleurs</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="icone.png">
     <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <style>
 
         @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+        @font-face { 	font-family: "title_font"; 	src: url('/Bariol.ttf'); }
         .font-family-karla { font-family: karla; }
         .bg-sidebar { background: #3d68ff; }
         .cta-btn { color: #3d68ff; }
@@ -57,6 +59,9 @@ if ($user["grade"] >= 3) {
         .active-nav-link { background: #1947ee; }
         .nav-item:hover { background: #1947ee; }
         .account-link:hover { background: #3d68ff; }
+        h1{
+            font-family: title_font, sans-serif;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-family-karla flex">
@@ -72,7 +77,7 @@ if ($user["grade"] >= 3) {
         <?php if ($user["grade"] >= 3){ ?>
             <a href="liste_employer.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
                 <i class="far fa-address-book mr-3"></i>
-                Employé(e)s
+                Employés
             </a><?php } ?>
         <a href="client.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
             <i class="fas fa-address-book mr-3"></i>
@@ -91,15 +96,10 @@ if ($user["grade"] >= 3) {
 <div class="relative w-full flex flex-col h-screen overflow-y-hidden">
     <!-- Desktop Header -->
     <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        Bienvenue <?= $user["1"].'('.$admin.')'?>
         <div class="w-1/2"></div>
-        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
-            <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
-                <img src="https://source.unsplash.com/uJ8LNVCBjFQ/400x400">
-            </button>
-            <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
-            <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
-                <a href="logout.php" class="block px-4 py-2 account-link hover:text-white">Déconnexion</a>
-            </div>
+        <div class="relative w-1/2 flex justify-end">
+            <a href="logout.php" class="block px-4 py-2 account-link hover:text-white">Déconnexion</a>
         </div>
     </header>
     <!-- Mobile Header & Nav -->
@@ -116,7 +116,7 @@ if ($user["grade"] >= 3) {
             <?php if ($user["grade"] >= 3){ ?>
             <a href="liste_employer.php" class="flex items-center text-white opacity-75  py-2 pl-4 nav-item">
                 <i class="fas fa-cart-arrow-down mr-3"></i>
-                Employé(e)s
+                Employés
             </a><?php } ?>
             <a href="commande.php" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
                 <i class="fas fa-cart-arrow-down mr-3"></i>
@@ -147,9 +147,9 @@ if ($user["grade"] >= 3) {
     <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
 <div class="w-full mt-12">
-    <h1 class="text-3xl text-center mt-5 text-black pb-6">Liste des employé(e)s</h1>
+    <h1 class="text-3xl text-center mt-5 text-black pb-6">Liste des employés</h1>
     <button class="mb-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-        <a href="add_employer.php">Ajouter un employé(e)</a>
+        <a href="add_employer.php">Ajouter un employé</a>
     </button>
     <div class="bg-white overflow-auto">
         <table class="text-left w-full border-collapse">

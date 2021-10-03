@@ -1,9 +1,10 @@
 <?php
 require 'header.php';
-
+/*Recuperation du fuseau horaire de la france et de la date du jours et afficher les commandes que si elles sont après la date du jours sinon elles sont dans
+/*commande past
+ */
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
-
 $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
                                  FROM commande
                                  INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
@@ -27,10 +28,10 @@ $commandes = $select->fetchAll();
         <a href="add_commande.php">Ajouter une commande</a>
     </button>
     <button class="mb-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-        <a href="commande_past.php">Commande passée</a>
+        <a href="commande_past.php">Commandes passées</a>
     </button>
     <div class="bg-white overflow-auto">
-        <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+        <table class="text-left w-full border-collapse">
             <thead>
             <tr>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Numéro de commande</th>
@@ -42,7 +43,7 @@ $commandes = $select->fetchAll();
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Quantité</th>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Total</th>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Detail fleurs</th>
-                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Employé(e) en charge</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Employé en charge</th>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Supprimer</th>
             </tr>
             </thead>
@@ -67,6 +68,7 @@ $commandes = $select->fetchAll();
             </tbody>
         </table>
     </div>
+
 <?php
 require_once "footer.php";
 ?>

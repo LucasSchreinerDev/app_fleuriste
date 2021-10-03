@@ -4,6 +4,7 @@ require_once 'database.php';
 if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = htmlspecialchars($_POST['email']);
     $password = htmlspecialchars($_POST['password']);
+    /*Pour le fonctionnement php allez voir add_commande_traitement, client update.php , database.php , add_employer.php et pour le css header.php plus*/
 
     $chek = $bdd->prepare('SELECT * FROM users WHERE email=?');// a voir
     $chek->execute(array($email));

@@ -1,10 +1,8 @@
 <?php
 session_start();
 require_once 'database.php';
-
-
 if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) && !empty($_POST["nom"]) && !empty($_POST["tel"]) && !empty($_POST["grade"] && !empty($_POST["statut"]))) {
-
+    /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
     $ids = intval(htmlentities($_POST["id"]));
     $email = htmlentities($_POST["email"]);
     $nom = htmlentities($_POST["nom"]);
@@ -13,6 +11,9 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) 
     $grade = htmlentities($_POST["grade"]);
     $grade = intval($grade);
     $statut = htmlentities($_POST["statut"]);
+    /*En base de donnée les statuts sont représenter par des chiffres pour mieux les comprendres dans l'interface et dans le code
+    /* Par exemple actif = 1 , innactif = 0
+      */
     if ($statut === "actif") {
         $statut = 1;
     }
@@ -49,8 +50,7 @@ if (!empty($_POST["id"]) && !empty($_POST["email"]) && !empty($_POST["prenom"]) 
                         "id" => $ids
                     ));
                     $final = $query->fetch();
-                    var_dump($ids);
-//                    header("Location:liste_employer.php");
+                    header("Location:liste_employer.php");
                 } else {
                     header('Location:liste_employer.php?tel_err');
                 }

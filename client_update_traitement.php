@@ -12,7 +12,7 @@ if (!empty($_POST["id"]) && !empty($_POST["prenom"]) && !empty($_POST["nom"]) &&
     $adresse = htmlentities($_POST["adresse"]);
     $ville = htmlentities($_POST["ville"]);
     $code_postal = htmlentities($_POST["code_postal"]);
-
+    /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
         if (strlen($prenom) <= 50) {
             if (strlen($nom) <= 50) {
                 if (strlen($telephone) <= 10 && is_numeric($telephone)) {
@@ -54,4 +54,3 @@ if (!empty($_POST["id"]) && !empty($_POST["prenom"]) && !empty($_POST["nom"]) &&
  else {
     header('Location:client.php?add_err=emptyfield');
 }
-/* ici */

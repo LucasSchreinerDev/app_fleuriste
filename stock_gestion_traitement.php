@@ -7,7 +7,7 @@ if (!empty($_POST['stock']) && !empty($_POST['fournisseur_id']) && !empty($_POST
     $fournisseur_id = intval($fournisseur_id);
     $fleur_id = htmlentities($_POST['fleur_id']);
     $fleur_id = intval($fleur_id);
-
+    /*Pour le fonctionnement php allez voir add_commande_traitement, client update.php , database.php , add_employer.php et pour le css header.php plus*/
     $update = $bdd->prepare("UPDATE fleur_fournisseur SET stock = :stock WHERE id_fournisseur = :id_fournisseur AND id_fleur = :id_fleur");
     $update->execute(array(
         "stock" => $stock_update,

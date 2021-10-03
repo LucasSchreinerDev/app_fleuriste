@@ -4,7 +4,7 @@ require 'database.php';
 if (!empty($_POST['firstname']) && isset($_POST['firstname']) && !empty($_POST['lastname']) && isset($_POST['lastname'])
     && !empty($_POST['phone']) && isset($_POST['phone']) && !empty($_POST['email']) && isset($_POST['email'])
     && !empty($_POST['address']) && isset($_POST['address']) && !empty($_POST['city']) && isset($_POST['city'])) {
-
+    /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
     $firstname = htmlentities($_POST['firstname']);
     $lastname = htmlentities($_POST['lastname']);
     $phone = htmlentities($_POST['phone']);

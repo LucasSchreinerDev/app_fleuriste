@@ -1,6 +1,5 @@
 <?php
 require 'database.php';
-
 if (!empty($_POST["raison_soc"]) && !empty($_POST["nom"]) && !empty($_POST["prenom"]) && !empty($_POST["tel"])) {
 
     $raison_soc = htmlentities($_POST['raison_soc']);

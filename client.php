@@ -1,7 +1,5 @@
 <?php
 require_once "header.php";
-require_once 'database.php';
-
 $insert = $bdd->prepare("SELECT * FROM `client`");
 $insert->execute(array());
 $clients = $insert->fetchAll();
@@ -12,7 +10,7 @@ $clients = $insert->fetchAll();
             <a href="client_add.php">Ajouter un client</a>
     </button>
     <div class="bg-white overflow-auto">
-        <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+        <table class="text-left w-full border-collapse">
             <thead>
             <tr>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Nom & prénom</th>
@@ -25,6 +23,7 @@ $clients = $insert->fetchAll();
             </tr>
             </thead>
             <tbody>
+<!--            Pour chaque client afficher un tableau avec les classes personnalisée du framework tailwind très simple à comprendre plus d'info commantaire header.php -->
             <?php foreach ($clients as $client) { ?>
             <tr class="hover:bg-grey-lighter">
                 <td class="py-4 px-6 border-b border-grey-light"><?= $client['nom']." ".$client['prenom'] ?></td>
@@ -34,6 +33,7 @@ $clients = $insert->fetchAll();
                 <td><button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                         <a href="client_commande.php?client=<?= $client['id'] ?>">commande</a>
                     </button></td>
+<!--                Pour chaque bouton j'envoi l'id du client pour soit le supprimer le modifer ou voir ses commandes -->
                 <td>    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                         <a href="client_update.php?update=<?= $client['id'] ?>">modifier</a>
                     </button>

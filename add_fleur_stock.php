@@ -8,7 +8,8 @@ $fournisseurs = $query->fetchAll();
 $queryb = $bdd->prepare('SELECT couleur.id, id_fleur, variete.libelle, couleur.libelle FROM fleur INNER JOIN variete ON fleur.id_variete = variete.id INNER JOIN couleur ON fleur.id_couleur = couleur.id');
 $queryb->execute();
 $fleurs = $queryb->fetchAll();
-//SELECT * FROM variete INNER JOIN fleur ON variete.id = fleur.variete_id
+/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
+
 ?>
 <h1 class="text-3xl text-center mt-5 text-black pb-6"> Ajouter un nouveau stock </h1>
 <div class="mt-10 sm:mt-0">

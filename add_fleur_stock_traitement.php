@@ -18,6 +18,7 @@ if (!empty($_POST['variete']) && !empty($_POST['fournisseur']) && !empty($_POST[
         ));
         header('Location:fleurs.php');
     }
+    /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
 
     else header('Location:fleurs.php?add_err=stock');
 }

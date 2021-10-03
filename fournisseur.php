@@ -4,6 +4,8 @@ require "header.php";
 $query = $bdd->prepare('SELECT * FROM fournisseur');
 $query->execute();
 $datas = $query->fetchAll()
+  /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
+
 ?>
 <h1 class="text-3xl text-center mt-5 text-black pb-6">Liste des Fournisseurs</h1>
 <div class="w-full mt-12">
@@ -11,7 +13,7 @@ $datas = $query->fetchAll()
         <a href="add_fournisseur.php">Ajouter un fournisseur </a>
     </button>
     <div class="bg-white overflow-auto">
-        <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+        <table class="text-left w-full border-collapse">
             <thead>
             <tr>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Raison social</th>

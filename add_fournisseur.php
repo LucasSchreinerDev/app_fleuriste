@@ -1,6 +1,6 @@
 <?php
 require "header.php";
-require "database.php";
+/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
 ?>
 <h1 class="text-3xl text-center mt-5 text-black pb-6">Ajouter un fournisseur</h1>
 <div class="mt-10 sm:mt-0">

@@ -1,6 +1,5 @@
 <?php
 require_once "header.php";
-require_once 'database.php';
 if (isset($_GET['update']) && !empty(($_GET['update']))) {
     $id = $_GET['update'];
     $ids = intval($_GET['update']);
@@ -9,6 +8,7 @@ if (isset($_GET['update']) && !empty(($_GET['update']))) {
         'ids' => $ids,
     ));
     $data = $select->fetch();
+    /*Pour le fonctionnement php allez voir add_commande_traitement, client update.php , database.php , add_employer.php et pour le css header.php plus*/
 }
 ?>
 <h1 class="text-3xl text-center mt-5 text-black pb-6">Modifier un(e) client(e)</h1>

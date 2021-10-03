@@ -2,7 +2,7 @@
 require 'database.php';
 
 if(!empty($_POST["varieter"]) && (!empty($_POST["prix"]))){
-
+    /*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
     $varieter = htmlentities($_POST["varieter"]);
     $prix = htmlentities(intval($_POST["prix"]));
 

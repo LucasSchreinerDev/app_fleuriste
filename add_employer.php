@@ -1,11 +1,13 @@
 <?php
 require_once 'header.php';
-require_once 'database.php';
+/*Je charge le fichier header.php pour éviter de retaper le code*/
+
+/*Si le grade n'est pas admin l'employé n'a pas accès ici*/
 if ($user["grade"] < 3){
     header('Location:commande.php?grade=err');
 }
 ?>
-<h1 class="text-3xl text-center mt-5 text-black pb-6">Ajouter un(e) Employé(e)</h1>
+<h1 class="text-3xl text-center mt-5 text-black pb-6">Ajouter un Employé</h1>
 <div class="mt-10 sm:mt-0">
     <div class="flex justify-center">
         <div class="md:mt-0 md:col-span-2">

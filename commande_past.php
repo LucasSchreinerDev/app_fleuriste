@@ -1,9 +1,7 @@
 <?php
 require 'header.php';
-
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
-
 $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
                                  FROM commande
                                  INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
@@ -17,9 +15,7 @@ $select->execute(array(
     'date' => $date,
 ));
 $commandes = $select->fetchAll();
-
-
-
+/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
 ?>
 <h1 class="text-3xl text-center mt-5 text-black pb-6">Liste des commandes passée</h1>
 <div class="w-full mt-12">
@@ -27,7 +23,7 @@ $commandes = $select->fetchAll();
         <a href="commande.php">Retour</a>
     </button>
     <div class="bg-white overflow-auto">
-        <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+        <table class="text-left w-full border-collapse">
             <thead>
             <tr>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Numéro de commande</th>

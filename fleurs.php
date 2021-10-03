@@ -10,7 +10,7 @@ $select = $bdd->prepare("SELECT fournisseur.id, couleur.libelle, variete.libelle
 ");
 $select->execute();
 $fleurs = $select->fetchAll();
-
+/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
 ?>
 <h1 class="text-3xl text-center mt-5 text-black pb-6">Liste des fleurs</h1>
 <div class="w-full mt-12">
@@ -34,11 +34,11 @@ $fleurs = $select->fetchAll();
             </thead>
             <tbody>
             <?php foreach ($fleurs as $fleur) { ?>
-                <tr class="hover:bg-grey-lighter" <?php if ($fleur["stock"] < 25) { echo " class='alert-rouge'";}?>>
+                <tr>
                     <td class="py-4 px-6 border-b border-grey-light"><?= $fleur['libelle'] ?></td>
                     <td class="py-4 px-6 border-b border-grey-light"><?= $fleur['1'] ?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?= $fleur['prix'] ?> </td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?= $fleur['stock']?></td>
+                    <td class="py-4 px-6 border-b border-grey-light"><?= $fleur['prix'].'€' ?> </td>
+                    <td class="py-4 px-6 border-b border-grey-light<?php if ($fleur["stock"] < 25) { echo " "."text-red-500";}?>"><?= $fleur['stock']?></td>
                     <td class="py-4 px-6 border-b border-grey-light"><?= $fleur['raison_soc']?></td>
                     <td>    <button class="ml-10 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                             <a href="stock_gestion.php?update=<?=$fleur[7]?>&fournisseur=<?=$fleur[0]?>">Modifier</a>
