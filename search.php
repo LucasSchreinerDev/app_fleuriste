@@ -1,36 +1,49 @@
 <?php
 session_start();
 require_once 'database.php';
-/*Dans chaque page sauf quelque une en cas d'erreur de redirection le header une session php pour sauvegarder l'utilisateur
-/*Je recharge la base de données car j'en ai besoin pour récuperer mes diverses données
-/*
-  */
+/*Pour le fonctionnement php allez voir add_commande_traitement, client update.php , database.php , add_employer.php et pour le css header.php plus*/
 if (!isset($_SESSION['user'])) {
     header('Location:index.php?logg_err');
 }
-/* Si l'utilisateur n'est pas connection ( que il n'y a aucune session php je le redirige vers la page de connection*/
+
 $sessionid = intval($_SESSION['user']);
-/*Je cherche à qui appartient la session via une requête sql*/
+
 $rank = $bdd->prepare("SELECT * from users where id = :session");
 $rank->execute(array(
     'session' => $sessionid,
 ));
 $user = $rank->fetch();
-/*Si le grade est = à 3 admin sinon employer et 0 est égal à innactif quelqu'un qui vient de s'enregistrer et que l'adminstrateur doit le valider via employer_update.php*/
+
 if ($user["grade"] >= 3) {
     $admin = "admin";
-}else $admin = "employé"
+}else $admin = "employé";
 
-/*
- * Pour le css j'utilise le framework Tailwind car je le trouve très simple d'utilisation par exemple MT = margin top BG-BLUE = Background color blue
- * ect, https://tailwindcss.com/docs
- * J'utilise aussi la police Bariol pour mes titres https://www.cufonfonts.com/font/bariol
- * J'ai utilisé Jimdo pour mon logo https://www.jimdo.com/fr/site-internet/logo-creator/
- * J'ai utilisé Font Awesome pour mes icones https://fontawesome.com/
- * Au niveau du Javascript mon header en contient très peu et j'utilise le framework Alpine js qui est un framework leger
- * qui est beaucoup utilise avec tailwind car il ce met directement dans les balises et simple d'utilisation dans mon cas
- * je l'ai utiliser pour le header quand il y'a X-show par exemple ou !open. https://tailwindcss.com/docs
- */
+if (!empty($_POST['search'])){
+$num_commande = $_POST['search'];
+$num_commande = intval($num_commande);
+
+date_default_timezone_set('Europe/Paris');
+$date = date('Y-m-d H:i:s');
+
+$select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
+                                 FROM commande
+                                 INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
+                                 INNER JOIN client ON commande.id_client = client.id 
+                                 INNER JOIN users ON commande.id_users = users.id    
+                                 INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur 
+                                 INNER JOIN variete ON fleur.id_variete = variete.id 
+                                 INNER JOIN couleur ON fleur.id_couleur = couleur.id 
+                                 WHERE num_commande = :num_commande");
+$select->execute(array(
+    'num_commande' => $num_commande,
+));
+$commande = $select->fetch();
+$row = $select->rowCount();
+
+if ($row === 0){
+    header('Location:commande.php?err=cannotfind');
+}
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -40,8 +53,8 @@ if ($user["grade"] >= 3) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Boite à fleurs</title>
-    <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="16x16" href="icone.png">
+    <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
         @font-face { 	font-family: "title_font"; 	src: url('/Bariol.ttf'); }
@@ -93,11 +106,11 @@ if ($user["grade"] >= 3) {
     <!-- Desktop Header -->
     <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
         <div>
-        Bienvenue <?= $user["1"].'('.$admin.')'?>
+            Bienvenue <?= $user["1"].'('.$admin.')'?>
         </div>
         <div class="w-1/2"></div>
         <div class="relative w-1/2 flex justify-end">
-                <a href="logout.php" class=" block px-4 py-2 account-link hover:text-white">Déconnexion</a>
+            <a href="logout.php" class=" block px-4 py-2 account-link hover:text-white">Déconnexion</a>
         </div>
     </header>
     <!-- Mobile Header & Nav -->
@@ -144,7 +157,52 @@ if ($user["grade"] >= 3) {
     </header>
     <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
-<!--            Prenom utilisateur-->
             <div class="md:invisible "> Bienvenue <?= $user["1"].'('.$admin.')'?> </div>
-
+<h1 class="text-3xl text-center mt-5 text-black pb-6">Detail de la commande</h1>
+<div class="w-full mt-12">
+    <button class="mb-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+        <a href="commande.php">Retour</a>
+    </button>
+    <div class="bg-white overflow-auto">
+        <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+            <thead>
+            <tr>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Numéro de commande</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Date de livraison</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Date de commande</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Adresse de livraison</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Nom & prenom client</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Téléphone</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Quantité</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Total</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Detail fleurs</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Employé en charge</th>
+                <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="hover:bg-grey-lighter">
+                <td class="py-4 px-6 border-b border-grey-light"><?=  $commande[0] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?=$commande[1] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?=$commande[2] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[3]." ". $commande[4] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[6]." ".$commande[5] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[9]?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[10]?></td>
+                <td class="py-4 px-6 border-b border-grey-light"> <?php $total = $commande[10] * $commande[11]; echo $total."€" ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[7]." ".$commande[8]?></td>
+                <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[12]." ".$commande[13]?></td>
+                <td><button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                        <a href="commande_del.php?del=<?=$commande[0]?>">Supprimer</a>
+                    </button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<?php
+require_once "footer.php";
+}else{
+    header('Location:commande.php?err=empty');
+}
+?>
 
