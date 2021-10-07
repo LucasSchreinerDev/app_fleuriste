@@ -1,11 +1,7 @@
 <?php
 session_start();
 require_once 'database.php';
-/*
- * Le header a du être recharger sur cette page car sinon il y'a un problème de redirection
- * Pour plus d'info sur le header allez voir les commentaires du fichiers header.php
- * */
-
+/*Pour le fonctionnement php allez voir add_commande_traitement, client update.php , database.php , add_employer.php et pour le css header.php plus*/
 if (!isset($_SESSION['user'])) {
     header('Location:index.php?logg_err');
 }
@@ -22,18 +18,14 @@ if ($user["grade"] >= 3) {
     $admin = "admin";
 }else $admin = "employé";
 
+if (!empty($_POST['search'])){
+$num_commande = $_POST['search'];
+$num_commande = intval($num_commande);
+
 date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
 
-if (!empty($_GET['client']) && isset($_GET['client'])) {
-    $id = htmlentities($_GET['client']);
-    $select = $bdd->prepare('SELECT nom, prenom, telephone,email,adresse,ville FROM client WHERE id = :id');
-    $select->execute(array(
-        'id' => $id,
-    ));
-    $data = $select->fetch();
-/*Je fais une recherche sql par l'id du client que j'ai recuper dans un input cacher sur le bouton de commande */
-    $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
+$select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
                                  FROM commande
                                  INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
                                  INNER JOIN client ON commande.id_client = client.id 
@@ -41,18 +33,17 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
                                  INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur 
                                  INNER JOIN variete ON fleur.id_variete = variete.id 
                                  INNER JOIN couleur ON fleur.id_couleur = couleur.id 
-                                 WHERE date_livraison >= :date AND client.id = :id");
-    $select->execute(array(
-        'date' => $date,
-        'id' => $id,
-    ));
-    $commandes = $select->fetchAll();
-    $row = $select->rowCount();
-    if ($row === 0){
-        header('Location:client.php?add_err=nofound');
-    }
-    /* Si il n'y en a pas il le redirige l'utilisateur vers la page des commmandes*/
+                                 WHERE num_commande = :num_commande");
+$select->execute(array(
+    'num_commande' => $num_commande,
+));
+$commande = $select->fetch();
+$row = $select->rowCount();
+
+if ($row === 0){
+    header('Location:commande.php?err=cannotfind');
 }
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -62,8 +53,8 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Boite à fleurs</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icone.png">
     <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="icon" type="image/png" sizes="16x16" href="icone.png">
     <style>
         @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
         @font-face { 	font-family: "title_font"; 	src: url('/Bariol.ttf'); }
@@ -85,7 +76,7 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
 <body class="bg-gray-100 font-family-karla flex">
 <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
-        <a href="commande.php"><img src="logo.svg"></a>
+        <a href="commande.php"><img src="assets/logo.svg"></a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
         <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
@@ -112,23 +103,26 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
     </nav>
 </aside>
 <div class="relative w-full flex flex-col h-screen overflow-y-hidden">
+    <!-- Desktop Header -->
     <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
         <div>
-        Bienvenue <?= $user["1"].'('.$admin.')'?>
+            Bienvenue <?= $user["1"].'('.$admin.')'?>
         </div>
         <div class="w-1/2"></div>
         <div class="relative w-1/2 flex justify-end">
-                <a href="logout.php" class=" block px-4 py-2 account-link hover:text-white">Déconnexion</a>
+            <a href="logout.php" class=" block px-4 py-2 account-link hover:text-white">Déconnexion</a>
         </div>
     </header>
+    <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="commande.php"><img src="logo.svg"></a>
+            <a href="commande.php"><img src="assets/logo.svg"></a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>
             </button>
         </div>
+        <!-- Dropdown Nav -->
         <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
             <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
                 <i class="fas fa-cart-arrow-down mr-3"></i>
@@ -164,13 +158,13 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
     <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
             <div class="md:invisible "> Bienvenue <?= $user["1"].'('.$admin.')'?> </div>
-<h1 class="text-3xl text-center mt-5 text-black pb-6">Commandes du client</h1>
+<h1 class="text-3xl text-center mt-5 text-black pb-6">Detail de la commande</h1>
 <div class="w-full mt-12">
     <button class="mb-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-        <a href="client.php">Retour</a>
+        <a href="commande.php">Retour</a>
     </button>
     <div class="bg-white overflow-auto">
-        <table class="text-left w-full border-collapse">
+        <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
             <thead>
             <tr>
                 <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Numéro de commande</th>
@@ -187,26 +181,28 @@ if (!empty($_GET['client']) && isset($_GET['client'])) {
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($commandes as $commande) { ?>
-                <tr class="hover:bg-grey-lighter">
-                    <td class="py-4 px-6 border-b border-grey-light"><?=  $commande[0] ?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?=$commande[1] ?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?=$commande[2] ?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[3]." ". $commande[4] ?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[6]." ".$commande[5] ?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[9]?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"><?= $commande[10]?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"> <?php $total = $commande[10] * $commande[11]; echo $total."€" ?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[7]." ".$commande[8]?></td>
-                    <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[12]." ".$commande[13]?></td>
-                    <td><button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                            <a href="commande_del.php?del=<?=$commande[0]?>">Supprimer</a>
-                        </button></td>
-                </tr>
-            <?php } ?>
+            <tr class="hover:bg-grey-lighter">
+                <td class="py-4 px-6 border-b border-grey-light"><?=  $commande[0] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?=$commande[1] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?=$commande[2] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[3]." ". $commande[4] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[6]." ".$commande[5] ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[9]?></td>
+                <td class="py-4 px-6 border-b border-grey-light"><?= $commande[10]?></td>
+                <td class="py-4 px-6 border-b border-grey-light"> <?php $total = $commande[10] * $commande[11]; echo $total."€" ?></td>
+                <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[7]." ".$commande[8]?></td>
+                <td class="py-4 px-6 border-b border-grey-light"> <?= $commande[12]." ".$commande[13]?></td>
+                <td><button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                        <a href="commande_del.php?del=<?=$commande[0]?>">Supprimer</a>
+                    </button></td>
+            </tr>
             </tbody>
         </table>
     </div>
 <?php
 require_once "footer.php";
+}else{
+    header('Location:commande.php?err=empty');
+}
 ?>
+

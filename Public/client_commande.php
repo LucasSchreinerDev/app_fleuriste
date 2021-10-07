@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once 'database.php';
+/*
+ * Le header a du être recharger sur cette page car sinon il y'a un problème de redirection
+ * Pour plus d'info sur le header allez voir les commentaires du fichiers header.php
+ * */
 
 if (!isset($_SESSION['user'])) {
     header('Location:index.php?logg_err');
@@ -18,23 +22,18 @@ if ($user["grade"] >= 3) {
     $admin = "admin";
 }else $admin = "employé";
 
-    date_default_timezone_set('Europe/Paris');
+date_default_timezone_set('Europe/Paris');
 $date = date('Y-m-d H:i:s');
 
-if ($user["grade"] < 3){
-    header('Location:commande.php?grade=err');
-}
-
-if (!empty($_GET['historique']) && isset($_GET['historique'])) {
-    $id = htmlentities($_GET['historique']);
+if (!empty($_GET['client']) && isset($_GET['client'])) {
+    $id = htmlentities($_GET['client']);
     $select = $bdd->prepare('SELECT nom, prenom, telephone,email,adresse,ville FROM client WHERE id = :id');
     $select->execute(array(
         'id' => $id,
     ));
     $data = $select->fetch();
-}
-/*Pour le fonctionnement php allez voir add_commande_traitement , database.php , add_employer.php et pour le css header.php plus*/
-$select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
+/*Je fais une recherche sql par l'id du client que j'ai recuper dans un input cacher sur le bouton de commande */
+    $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adresse_livraison, commande_fleur.code_postal, client.nom, client.prenom, variete.libelle, couleur.libelle, commande_fleur.tel_contact, quantite, prix, users.firstname, users.surname 
                                  FROM commande
                                  INNER JOIN commande_fleur ON commande.num_commande = commande_fleur.id_commande 
                                  INNER JOIN client ON commande.id_client = client.id 
@@ -42,95 +41,94 @@ $select = $bdd->prepare("SELECT num_commande, date_livraison, date_commande, adr
                                  INNER JOIN fleur ON commande_fleur.id_fleur = fleur.id_fleur 
                                  INNER JOIN variete ON fleur.id_variete = variete.id 
                                  INNER JOIN couleur ON fleur.id_couleur = couleur.id 
-                                 WHERE users.id = :id");
-$select->execute(array(
-    'id' => $id,
-));
-$commandes = $select->fetchAll();
-$row = $select->rowCount();
-
-if ($row === 0){
-    header('Location:liste_employer.php?err=notcommande');
+                                 WHERE date_livraison >= :date AND client.id = :id");
+    $select->execute(array(
+        'date' => $date,
+        'id' => $id,
+    ));
+    $commandes = $select->fetchAll();
+    $row = $select->rowCount();
+    if ($row === 0){
+        header('Location:client.php?add_err=nofound');
+    }
+    /* Si il n'y en a pas il le redirige l'utilisateur vers la page des commmandes*/
 }
 ?>
-    <!doctype html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Boite à fleurs</title>
-        <link rel="icon" type="image/png" sizes="16x16" href="icone.png">
-        <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
-        <style>
-            @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
-            @font-face { 	font-family: "title_font"; 	src: url('/Bariol.ttf'); }
-            .font-family-karla { font-family: karla; }
-            .bg-sidebar { background: #3d68ff; }
-            .cta-btn { color: #3d68ff; }
-            .upgrade-btn { background: #1947ee; }
-            .upgrade-btn:hover { background: #0038fd; }
-            .active-nav-link { background: #1947ee; }
-            .nav-item:hover { background: #1947ee; }
-            .account-link:hover { background: #3d68ff; }
-            h1{
-                font-family: title_font, serif;
-            }
-            .Bariol{
-                font-family: title_font, serif;
-        </style>
-    </head>
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Boite à fleurs</title>
+    <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icone.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+        @font-face { 	font-family: "title_font"; 	src: url('/Bariol.ttf'); }
+        .font-family-karla { font-family: karla; }
+        .bg-sidebar { background: #3d68ff; }
+        .cta-btn { color: #3d68ff; }
+        .upgrade-btn { background: #1947ee; }
+        .upgrade-btn:hover { background: #0038fd; }
+        .active-nav-link { background: #1947ee; }
+        .nav-item:hover { background: #1947ee; }
+        .account-link:hover { background: #3d68ff; }
+        h1{
+            font-family: title_font, serif;
+        }
+        .Bariol{
+            font-family: title_font, serif;
+    </style>
+</head>
 <body class="bg-gray-100 font-family-karla flex">
-    <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
-        <div class="p-6">
-            <a href="commande.php"><img src="logo.svg"></a>
-        </div>
-        <nav class="text-white text-base font-semibold pt-3">
-            <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                <i class="fas fa-cart-arrow-down mr-3"></i>
-                Commandes
-            </a>
-            <?php if ($user["grade"] >= 3){ ?>
-                <a href="liste_employer.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                    <i class="far fa-address-book mr-3"></i>
-                    Employés
-                </a><?php } ?>
-            <a href="client.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                <i class="fas fa-address-book mr-3"></i>
-                Clients
-            </a>
-            <a href="fleurs.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                <i class="fas fa-spa mr-3"></i>
-                Fleurs
-            </a>
-            <a href="fournisseur.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
-                <i class="fas fa-truck mr-3"></i>
-                Fournisseurs
-            </a>
-        </nav>
-    </aside>
+<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <div class="p-6">
+        <a href="commande.php"><img src="assets/logo.svg"></a>
+    </div>
+    <nav class="text-white text-base font-semibold pt-3">
+        <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-cart-arrow-down mr-3"></i>
+            Commandes
+        </a>
+        <?php if ($user["grade"] >= 3){ ?>
+            <a href="liste_employer.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="far fa-address-book mr-3"></i>
+                Employés
+            </a><?php } ?>
+        <a href="client.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-address-book mr-3"></i>
+            Clients
+        </a>
+        <a href="fleurs.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-spa mr-3"></i>
+            Fleurs
+        </a>
+        <a href="fournisseur.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+            <i class="fas fa-truck mr-3"></i>
+            Fournisseurs
+        </a>
+    </nav>
+</aside>
 <div class="relative w-full flex flex-col h-screen overflow-y-hidden">
-    <!-- Desktop Header -->
     <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
         <div>
-            Bienvenue <?= $user["1"].'('.$admin.')'?>
+        Bienvenue <?= $user["1"].'('.$admin.')'?>
         </div>
         <div class="w-1/2"></div>
         <div class="relative w-1/2 flex justify-end">
-            <a href="logout.php" class=" block px-4 py-2 account-link hover:text-white">Déconnexion</a>
+                <a href="logout.php" class=" block px-4 py-2 account-link hover:text-white">Déconnexion</a>
         </div>
     </header>
-    <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="commande.php"><img src="logo.svg"></a>
+            <a href="commande.php"><img src="assets/logo.svg"></a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>
             </button>
         </div>
-        <!-- Dropdown Nav -->
         <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
             <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
                 <i class="fas fa-cart-arrow-down mr-3"></i>
@@ -164,12 +162,12 @@ if ($row === 0){
         </nav>
     </header>
     <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
-    <main class="w-full flex-grow p-6">
-    <div class="md:invisible "> Bienvenue <?= $user["1"].'('.$admin.')'?> </div>
-    <h1 class="text-3xl text-center mt-5 text-black pb-6">Commandes de l'employé</h1>
-    <div class="w-full mt-12">
+        <main class="w-full flex-grow p-6">
+            <div class="md:invisible "> Bienvenue <?= $user["1"].'('.$admin.')'?> </div>
+<h1 class="text-3xl text-center mt-5 text-black pb-6">Commandes du client</h1>
+<div class="w-full mt-12">
     <button class="mb-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-        <a href="liste_employer.php">Retour</a>
+        <a href="client.php">Retour</a>
     </button>
     <div class="bg-white overflow-auto">
         <table class="text-left w-full border-collapse">

@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Boite à fleurs</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="icone.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icone.png">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <main>
@@ -16,7 +16,7 @@
         <div class="absolute bg-black opacity-60 inset-0 z-0"></div>
         <div class="mt-2 items-center z-10">
             <div class="p-6">
-                <img  class="object-cover h-20 w-full" src="logo_b.svg" alt="fleur">
+                <img class="object-cover h-20 w-full" src="assets/logo_b.svg" alt="fleur">
             </div>
             <form action="loggin_traitement.php" method="post"
                   class="p-20 bg-white max-w-sm mx-auto rounded-xl shadow-xl overflow-hidden p-6 space-y-10">

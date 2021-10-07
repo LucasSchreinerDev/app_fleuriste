@@ -45,7 +45,7 @@ if ($user["grade"] >= 3) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Boite à fleurs</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="icone.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icone.png">
     <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <style>
 
@@ -67,7 +67,7 @@ if ($user["grade"] >= 3) {
 <body class="bg-gray-100 font-family-karla flex">
 <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
-        <a href="commande.php"><img src="logo.svg"></a>
+        <a href="commande.php"><img src="assets/logo.svg"></a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
         <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
@@ -105,7 +105,7 @@ if ($user["grade"] >= 3) {
     <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="commande.php"><img src="logo.svg"></a>
+            <a href="commande.php"><img src="assets/logo.svg"></a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>

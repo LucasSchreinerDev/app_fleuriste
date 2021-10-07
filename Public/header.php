@@ -41,7 +41,7 @@ if ($user["grade"] >= 3) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Boite à fleurs</title>
     <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="icon" type="image/png" sizes="16x16" href="icone.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icone.png">
     <style>
         @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
         @font-face { 	font-family: "title_font"; 	src: url('/Bariol.ttf'); }
@@ -63,7 +63,7 @@ if ($user["grade"] >= 3) {
 <body class="bg-gray-100 font-family-karla flex">
 <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
-        <a href="commande.php"><img src="logo.svg"></a>
+        <a href="commande.php"><img src="assets/logo.svg"></a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
         <a href="commande.php" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
@@ -103,7 +103,7 @@ if ($user["grade"] >= 3) {
     <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="commande.php"><img src="logo.svg"></a>
+            <a href="commande.php"><img src="assets/logo.svg"></a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>
@@ -144,7 +144,7 @@ if ($user["grade"] >= 3) {
     </header>
     <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
-<!--            Prenom utilisateur-->
+<!--            Prenom utilisateur<-->
             <div class="md:invisible "> Bienvenue <?= $user["1"].'('.$admin.')'?> </div>
 
 
